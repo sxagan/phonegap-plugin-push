@@ -1,5 +1,336 @@
 # Change Log
 
+## [v1.8.3](https://github.com/phonegap/phonegap-plugin-push/tree/v1.8.3) (2016-07-09)
+[Full Changelog](https://github.com/phonegap/phonegap-plugin-push/compare/v1.8.2...v1.8.3)
+
+- 1.8.3 [view commit](http://github.com/phonegap/phonegap-plugin-push/commit/a0cfba9f85b7d7dfa3c244c9e78a03872ff938f9)
+- Bumping plugin version to 1.8.3 [view commit](http://github.com/phonegap/phonegap-plugin-push/commit/cc7d5abe55957cebfdd3b39ba670f8093bdac564)
+- Update pluginpub version [view commit](http://github.com/phonegap/phonegap-plugin-push/commit/0d8548d3166b7b4d34b32944b800c96e4aadf70a)
+- Issue#1282 Show app name if title is empty (#1285) [view commit](http://github.com/phonegap/phonegap-plugin-push/commit/3d7a3a39fb931aafa86be6b1568a682133c36de7)
+- Note about background app refresh (#1267) [view commit](http://github.com/phonegap/phonegap-plugin-push/commit/4f13533deb0c1b927dab9d9cddb13c53fdefd9b0)
+- Issue #1213: XDK instructions link for www template is incorrect (#1283) [view commit](http://github.com/phonegap/phonegap-plugin-push/commit/d2ede2bab4cd6462f7dffc4e2bc733d585107e89)
+- Merge pull request #1277 from dannywillems/patch-1 [view commit](http://github.com/phonegap/phonegap-plugin-push/commit/ea5ae88f3fcfa8fc605cf2c974b52d793bd2c4c9)
+- Unused variable app. Caused warnings. [view commit](http://github.com/phonegap/phonegap-plugin-push/commit/09dedb43481d207d0b17de4eb26c5a1904d08f65)
+- Issue #1254: [Question] Is it possible to get more than 3 action buttons on Android notifications? [view commit](http://github.com/phonegap/phonegap-plugin-push/commit/d8ab6665d878c8dec3ff9914c11a9329c8a415e7)
+- Use unique pending intent request code to enable multiple... (#1225) [view commit](http://github.com/phonegap/phonegap-plugin-push/commit/475883833556eb001e2e0adb986bd96b78bdcb2f)
+- Add `cordovaDependencies` section to package.json (#1232) [view commit](http://github.com/phonegap/phonegap-plugin-push/commit/6b343e78e9bfca921cef78eb504755477ecaeff9)
+- Updating CHANGELOG [view commit](http://github.com/phonegap/phonegap-plugin-push/commit/14afb94126acb51a6f10a2094f7f391f2f17dee5)
+
+## [v1.8.2](https://github.com/phonegap/phonegap-plugin-push/tree/v1.8.2) (2016-07-09)
+[Full Changelog](https://github.com/phonegap/phonegap-plugin-push/compare/v1.8.1...v1.8.2)
+
+- 1.8.2 [view commit](http://github.com/phonegap/phonegap-plugin-push/commit/b47d519abff667400c4863fe90a27ae88e3c0671)
+- Bumping plugin version to 1.8.2 [view commit](http://github.com/phonegap/phonegap-plugin-push/commit/738735ddcd9b60014beb4207c3ccdcd30ba7a803)
+- Localization from resources (#1196) [view commit](http://github.com/phonegap/phonegap-plugin-push/commit/2de9fc2827a18941ae6040e90ea0da5dc97652d8)
+- Issue #1199: iOS 10 is not firing the 'notification' event after clicking on a notification when the app is in hibernate [view commit](http://github.com/phonegap/phonegap-plugin-push/commit/e711b09b15a8e85156e9158026509522859c7900)
+- Use unique pending intent request code to enable multiple simultaneous notifications with action buttons (#1216) [view commit](http://github.com/phonegap/phonegap-plugin-push/commit/1fe640637fd67ec0ce2cf50ee1cab793ed01cfb7)
+- (doc) Fixing `ios.catetories` type in api reference. [view commit](http://github.com/phonegap/phonegap-plugin-push/commit/0a93fab9cec5ac2a2b813090958054e8e7b15f9a)
+- Issue #1155: [doc] Explain usage of the top level "priority" in GCM notifications [view commit](http://github.com/phonegap/phonegap-plugin-push/commit/ddaf48e089dc3cb46f9bd9f5e4678a2118b14a48)
+- Issue #1121: Notification is not shown on ios device [view commit](http://github.com/phonegap/phonegap-plugin-push/commit/432761202c43a1f2a4ba9c643df78b81b87d66fa)
+- Issue #1160: data.additionalData.[Object] as 'undefined' in iOS [view commit](http://github.com/phonegap/phonegap-plugin-push/commit/946052a895268155f56a7a3a1006d019599b46f9)
+- Few edits (#1179) [view commit](http://github.com/phonegap/phonegap-plugin-push/commit/f90b4bbf0e78adaa029737cf70b146ec97d09015)
+- Adding workshop tutorial link to the README (#1169) [view commit](http://github.com/phonegap/phonegap-plugin-push/commit/59800a930557bd864e527404e1035c2d8ac149c9)
+- added Azure server-side example (#1124) [view commit](http://github.com/phonegap/phonegap-plugin-push/commit/0bd4d0e612f6f1c62e33d147564b7e495436f15e)
+- Update appxmanifests with ToastCapable=true after plugin install (#1158) [view commit](http://github.com/phonegap/phonegap-plugin-push/commit/eeefc036a8600bea80135b6b14241509853444ab)
+- Updating CHANGELOG [view commit](http://github.com/phonegap/phonegap-plugin-push/commit/30d3d5dc733c80bc1687e5eff28d0614a0f38e51)
+
+## [v1.8.1](https://github.com/phonegap/phonegap-plugin-push/tree/v1.8.1) (2016-07-09)
+[Full Changelog](https://github.com/phonegap/phonegap-plugin-push/compare/v1.8.0...v1.8.1)
+
+- 1.8.1 [view commit](http://github.com/phonegap/phonegap-plugin-push/commit/95c27d29ef37bfd750972561022db53de256840d)
+- Bumping plugin version to 1.8.1 [view commit](http://github.com/phonegap/phonegap-plugin-push/commit/e4ba55ff310d4d931503de2547738cc169b6f968)
+- [Windows] Added a check on activation context existence (#1129) [view commit](http://github.com/phonegap/phonegap-plugin-push/commit/151c8cd97aa71742798e969dd9e6c2208b8c1f15)
+- Updating CHANGELOG [view commit](http://github.com/phonegap/phonegap-plugin-push/commit/4cd4ee00e2eb081d0d29d001e580009fba5c341a)
+
+## [v1.8.0](https://github.com/phonegap/phonegap-plugin-push/tree/v1.8.0) (2016-07-09)
+[Full Changelog](https://github.com/phonegap/phonegap-plugin-push/compare/v1.7.4...v1.8.0)
+
+- 1.8.0 [view commit](http://github.com/phonegap/phonegap-plugin-push/commit/d5a8480e6e230c959d8079554a6366f3605cb97e)
+- Bumping plugin version to 1.8.0 [view commit](http://github.com/phonegap/phonegap-plugin-push/commit/f8c784536e40ce6dddf14edeff7ad2a9ee944156)
+- Check that serviceWorker exists before unregistering [view commit](http://github.com/phonegap/phonegap-plugin-push/commit/ef004002d60d8028ed6aad2cef79d4d8ac6aed49)
+- Populate additionalData on browser platform [view commit](http://github.com/phonegap/phonegap-plugin-push/commit/63a29cdbbc0cd0374552d51e0e2d2217f5361f79)
+- Issue #683:  Support Android N inline reply actions [view commit](http://github.com/phonegap/phonegap-plugin-push/commit/e835ca31ac02a3455ece8c96938260935e2e7100)
+- Issue #1109: Installation.MD has a mistake [view commit](http://github.com/phonegap/phonegap-plugin-push/commit/89834b78a63ad6c927295eb5699204a0ccb49a73)
+- Use push server DELETE route to remove browser keys [view commit](http://github.com/phonegap/phonegap-plugin-push/commit/4615ea694bd5858bfdb8553c9a9390e1e30c2c36)
+- [chore] fix mis-spelling [view commit](http://github.com/phonegap/phonegap-plugin-push/commit/efdef52deec4f7e8b6b4ee87460bd87cc0479c74)
+- Browser: always call success on unimplemented methods [view commit](http://github.com/phonegap/phonegap-plugin-push/commit/1b8bf267674508361c68fb03b12f97608e87456b)
+- Update push url [view commit](http://github.com/phonegap/phonegap-plugin-push/commit/e1d8774f760d7a72a547d68e1b2ac367572e2b6d)
+- Merge branch 'browser' [view commit](http://github.com/phonegap/phonegap-plugin-push/commit/a2ad8da9a25a02a1b674e6adf0a37e18cde185ab)
+- Add browser platform support [view commit](http://github.com/phonegap/phonegap-plugin-push/commit/e8e0fe47001e461cf7fb7274d4c2b3dc687cd90e)
+- Issue #1080: clearAllNotifications not working on iOS [view commit](http://github.com/phonegap/phonegap-plugin-push/commit/4bea2a7469ab2bd677e12d440b457e1d5383b1f0)
+- [whoops] revert accidental commit of a pluginpub test [view commit](http://github.com/phonegap/phonegap-plugin-push/commit/da301e8a43a0a659947294c9d94f7fd09f5ac4b2)
+- [doc] remove deprecation notice on hasPermission [view commit](http://github.com/phonegap/phonegap-plugin-push/commit/d4b79a81c5ad85a4b566e5a23a19b10fa78dcf17)
+- Updating CHANGELOG [view commit](http://github.com/phonegap/phonegap-plugin-push/commit/8512a6cb7be3c0bb2b5db813c7aaff4c49fc52a2)
+- Bumping plugin version to 1.9.0 [view commit](http://github.com/phonegap/phonegap-plugin-push/commit/b015543b8a06526b7b70357407e635c180c473ee)
+- Update CHANGELOG [view commit](http://github.com/phonegap/phonegap-plugin-push/commit/e6f87a50d9f9cb3bd7c9ba599b3d3afbc0fd7aaf)
+
+## [1.7.4](https://github.com/phonegap/phonegap-plugin-push/tree/v1.7.4) (2016-07-09)
+[Full Changelog](https://github.com/phonegap/phonegap-plugin-push/compare/1.7.3...v1.7.4)
+
+**Closed issues:**
+
+- FYI: Resumed iOS 10 Notifications results in an error (fix problem on iOS) [\#1002](https://github.com/phonegap/phonegap-plugin-push/issues/1002)
+
+
+## [1.7.3](https://github.com/phonegap/phonegap-plugin-push/tree/1.7.3) (2016-07-06)
+[Full Changelog](https://github.com/phonegap/phonegap-plugin-push/compare/1.7.2...1.7.3)
+
+**Closed issues:**
+
+- Implemented clearBadge for Android [\#1030](https://github.com/phonegap/phonegap-plugin-push/issues/1030)
+- update badge number even if the app is totally closed [\#1027](https://github.com/phonegap/phonegap-plugin-push/issues/1027)
+- Documentation issue of Android pictures push [\#1028](https://github.com/phonegap/phonegap-plugin-push/issues/1028)
+- [iOS] unregister for a topic: parameter is not consistent between ios/android [\#1029](https://github.com/phonegap/phonegap-plugin-push/issues/1029)
+- [doc] Error installing in IOS, version requirement: >=4.1.0 [\#1047](https://github.com/phonegap/phonegap-plugin-push/issues/1047)
+
+## [1.7.2](https://github.com/phonegap/phonegap-plugin-push/tree/1.7.2) (2016-06-24)
+[Full Changelog](https://github.com/phonegap/phonegap-plugin-push/compare/1.7.1...1.7.2)
+
+**Closed issues:**
+
+- FYI: Resumed iOS 10 Notifications results in an error [\#1002](https://github.com/phonegap/phonegap-plugin-push/issues/1002)
+
+## [1.7.1](https://github.com/phonegap/phonegap-plugin-push/tree/1.7.1) (2016-06-17)
+[Full Changelog](https://github.com/phonegap/phonegap-plugin-push/compare/1.7.0...1.7.1)
+
+**Closed issues:**
+
+- Update docs for Android badges [\#982](https://github.com/phonegap/phonegap-plugin-push/issues/982)
+- visibility not working [\#987](https://github.com/phonegap/phonegap-plugin-push/issues/982)
+- Revert pinning of support-v13 [\#983](https://github.com/phonegap/phonegap-plugin-push/issues/983)
+
+## [1.7.0](https://github.com/phonegap/phonegap-plugin-push/tree/1.7.0) (2016-06-06)
+[Full Changelog](https://github.com/phonegap/phonegap-plugin-push/compare/1.6.4...1.7.0)
+
+**Closed issues:**
+
+- disable notification's sounds on a per notification basis [\#885](https://github.com/phonegap/phonegap-plugin-push/issues/885)
+- Android GCM Action Buttons lack of documentation [\#884](https://github.com/phonegap/phonegap-plugin-push/issues/884)
+- Android double on('notification') fired [\#828](https://github.com/phonegap/phonegap-plugin-push/issues/828)
+- Device should register, Push Notification should receive on IOS (IntelXDK) [\#926](https://github.com/phonegap/phonegap-plugin-push/issues/926)
+- Use cordova-ios 4.1.0 in Milestone 1.7.0 [\#751](https://github.com/phonegap/phonegap-plugin-push/issues/751)
+- Badge on android [\#190](https://github.com/phonegap/phonegap-plugin-push/issues/190)
+- JS error in Success callbackId: PushNotifiation###.. whenever a notification is sent to the device [\#824](https://github.com/phonegap/phonegap-plugin-push/issues/824)
+- coldstart flag always set to true if the app has been opened through an alert, on ios 9.3.1, plugin version 1.6.2 cordova 6.1.0 cordova ios 4.1.1 [\#795](https://github.com/phonegap/phonegap-plugin-push/issues/795)
+- Is there any way to clear notifications out from the app? [\#346](https://github.com/phonegap/phonegap-plugin-push/issues/346)
+- Show contents of notification when phone is locked [\#750](https://github.com/phonegap/phonegap-plugin-push/issues/750)
+- PushPlugin.m init() should send pending notification when js side is ready [\#658](https://github.com/phonegap/phonegap-plugin-push/issues/658)
+
+## [1.6.4](https://github.com/phonegap/phonegap-plugin-push/tree/1.6.4) (2016-05-24)
+[Full Changelog](https://github.com/phonegap/phonegap-plugin-push/compare/1.6.3...1.6.4)
+
+**Closed issues:**
+
+- hasPermission() for windows [\#874](https://github.com/phonegap/phonegap-plugin-push/issues/874)
+- Latest Play store service breaks phonegap-plugin-push [\#909](https://github.com/phonegap/phonegap-plugin-push/issues/909)
+
+## [1.6.3](https://github.com/phonegap/phonegap-plugin-push/tree/1.6.3) (2016-04-27)
+[Full Changelog](https://github.com/phonegap/phonegap-plugin-push/compare/1.6.2...1.6.3)
+
+**Fixed bugs:**
+
+- \[Android\] Can't install multiple apps using this plugin \(v1.6.x\) [\#768](https://github.com/phonegap/phonegap-plugin-push/issues/768)
+- JS error in "Success callbackId: PushNotifiation\#\#\#.." whenever a notification is sent to the device [\#824](https://github.com/phonegap/phonegap-plugin-push/issues/824)
+
+**Closed issues:**
+
+- Move example directory to a phonegap template [\#832](https://github.com/phonegap/phonegap-plugin-push/issues/832)
+- va [\#830](https://github.com/phonegap/phonegap-plugin-push/issues/830)
+- does not create the notification bar [\#821](https://github.com/phonegap/phonegap-plugin-push/issues/821)
+- Did not show notification in status bar for Xiomi Redmi Note 3 [\#790](https://github.com/phonegap/phonegap-plugin-push/issues/790)
+- PushNotification.hasPermission not working as expected [\#789](https://github.com/phonegap/phonegap-plugin-push/issues/789)
+
+
+## [1.6.2](https://github.com/phonegap/phonegap-plugin-push/tree/1.6.2) (2016-04-06)
+[Full Changelog](https://github.com/phonegap/phonegap-plugin-push/compare/1.6.1...1.6.2)
+
+**Fixed bugs:**
+
+- Unexpected / Broken Android Behavior [\#767](https://github.com/phonegap/phonegap-plugin-push/issues/767)
+
+**Closed issues:**
+
+- Android: JSON Exception No Value Found for Sender [\#781](https://github.com/phonegap/phonegap-plugin-push/issues/781)
+- Should I call init\(\) every time the app is launched?? [\#777](https://github.com/phonegap/phonegap-plugin-push/issues/777)
+- Request: extend action buttons to wearables [\#776](https://github.com/phonegap/phonegap-plugin-push/issues/776)
+- After upgrade: 601 duplicate symbols for architecture i386 [\#769](https://github.com/phonegap/phonegap-plugin-push/issues/769)
+- push plugin [\#766](https://github.com/phonegap/phonegap-plugin-push/issues/766)
+- Documentation mentions old name for dependency [\#763](https://github.com/phonegap/phonegap-plugin-push/issues/763)
+- push.on\('notification'\) callback is not called on coldstart on iOS [\#758](https://github.com/phonegap/phonegap-plugin-push/issues/758)
+- plugin doesn't work in background or when app not running on kitkat 4.4.2 [\#754](https://github.com/phonegap/phonegap-plugin-push/issues/754)
+- App Icon not displayed in tray using build.phonegap and cli-6.0.0 \[ios\] [\#753](https://github.com/phonegap/phonegap-plugin-push/issues/753)
+- push.on\('registration'\) event not called on IOS. [\#752](https://github.com/phonegap/phonegap-plugin-push/issues/752)
+- catch 22 when trying to use this plug [\#741](https://github.com/phonegap/phonegap-plugin-push/issues/741)
+- push.setApplicationIconBadgeNumber not working in background [\#736](https://github.com/phonegap/phonegap-plugin-push/issues/736)
+- Strange issue while debugging in Safari Inspector [\#733](https://github.com/phonegap/phonegap-plugin-push/issues/733)
+
+## [1.6.1](https://github.com/phonegap/phonegap-plugin-push/tree/1.6.1) (2016-03-23)
+[Full Changelog](https://github.com/phonegap/phonegap-plugin-push/compare/1.6.0...1.6.1)
+
+**Fixed bugs:**
+
+- App crashes on notification when in background [\#715](https://github.com/phonegap/phonegap-plugin-push/issues/715)
+
+**Closed issues:**
+
+- Memory Leak when call `push.on\('registration'`. so `Push Plugin register called` not called [\#743](https://github.com/phonegap/phonegap-plugin-push/issues/743)
+- l [\#739](https://github.com/phonegap/phonegap-plugin-push/issues/739)
+- \[testing issue template\] ignore me [\#717](https://github.com/phonegap/phonegap-plugin-push/issues/717)
+- Incorrect init option "vibration" in a few ios samples on PAYLOAD.md [\#713](https://github.com/phonegap/phonegap-plugin-push/issues/713)
+- android M wear case [\#691](https://github.com/phonegap/phonegap-plugin-push/issues/691)
+- Incorrect document detailing \(PHONEGAP\_BUILD.md\) [\#686](https://github.com/phonegap/phonegap-plugin-push/issues/686)
+- Windows Phone 8.1, not fired plugin methods [\#526](https://github.com/phonegap/phonegap-plugin-push/issues/526)
+
+## [1.6.0](https://github.com/phonegap/phonegap-plugin-push/tree/1.6.0) (2016-03-09)
+[Full Changelog](https://github.com/phonegap/phonegap-plugin-push/compare/1.5.3...1.6.0)
+
+**Implemented enhancements:**
+
+- Background processing with coldstart on iOS [\#583](https://github.com/phonegap/phonegap-plugin-push/issues/583)
+
+**Fixed bugs:**
+
+- Android: notification does not dismiss after selection button \(1.6.x dev\) [\#610](https://github.com/phonegap/phonegap-plugin-push/issues/610)
+
+**Closed issues:**
+
+- XDK doesn't work with v1.5.x. Are you going to have a non-gradle version for v1.5.x [\#675](https://github.com/phonegap/phonegap-plugin-push/issues/675)
+- emoji support [\#668](https://github.com/phonegap/phonegap-plugin-push/issues/668)
+- iOS sound not found \[edited with new debug info\] [\#667](https://github.com/phonegap/phonegap-plugin-push/issues/667)
+- Push notification register APN to GCM Problem [\#665](https://github.com/phonegap/phonegap-plugin-push/issues/665)
+- IOS Never fire the registration event [\#659](https://github.com/phonegap/phonegap-plugin-push/issues/659)
+- Badge count inaccurate [\#651](https://github.com/phonegap/phonegap-plugin-push/issues/651)
+- Android Icon options in phonegap-plugin-push@1.2.3  [\#648](https://github.com/phonegap/phonegap-plugin-push/issues/648)
+- Getting same registration id when re-register  [\#641](https://github.com/phonegap/phonegap-plugin-push/issues/641)
+- Callback not called unless you register to GCM everytime you open the app [\#626](https://github.com/phonegap/phonegap-plugin-push/issues/626)
+- How to make GCM show alert automatically ios [\#602](https://github.com/phonegap/phonegap-plugin-push/issues/602)
+- Shoddy image for notification icon,status bar icon? [\#587](https://github.com/phonegap/phonegap-plugin-push/issues/587)
+- ERROR: Plugin 'PushNotification' not found [\#568](https://github.com/phonegap/phonegap-plugin-push/issues/568)
+- ar [\#533](https://github.com/phonegap/phonegap-plugin-push/issues/533)
+- No sound and vibration for GCM when built with Cordova but Ok with PhoneBuild [\#520](https://github.com/phonegap/phonegap-plugin-push/issues/520)
+
+## [1.5.3](https://github.com/phonegap/phonegap-plugin-push/tree/1.5.3) (2016-01-14)
+[Full Changelog](https://github.com/phonegap/phonegap-plugin-push/compare/1.5.2...1.5.3)
+
+**Fixed bugs:**
+
+- Android 4.1 and AppOpsManager [\#495](https://github.com/phonegap/phonegap-plugin-push/issues/495)
+
+**Closed issues:**
+
+- iOS Building Error [\#507](https://github.com/phonegap/phonegap-plugin-push/issues/507)
+- \[FIX\] notification not fired when app is in background/killed ? Check this out [\#502](https://github.com/phonegap/phonegap-plugin-push/issues/502)
+- Which Sender ID to use [\#485](https://github.com/phonegap/phonegap-plugin-push/issues/485)
+- coldstart not documented [\#483](https://github.com/phonegap/phonegap-plugin-push/issues/483)
+- Android: iconColor doesn't work in hexadecimal \(\#RRGGBB\) format [\#480](https://github.com/phonegap/phonegap-plugin-push/issues/480)
+- Cannot find symbol variable INSTANCE\_ID\_SCOPE [\#477](https://github.com/phonegap/phonegap-plugin-push/issues/477)
+- notification event not fired on cold start on Android 5 [\#469](https://github.com/phonegap/phonegap-plugin-push/issues/469)
+- Push notifications not working with iPhone6 + ios 9.2? [\#462](https://github.com/phonegap/phonegap-plugin-push/issues/462)
+- UTF8 support on android: the notification text \(on android only\) is shown with "???" [\#461](https://github.com/phonegap/phonegap-plugin-push/issues/461)
+- example application? [\#460](https://github.com/phonegap/phonegap-plugin-push/issues/460)
+- build fail in ios - version 1.5.2 [\#458](https://github.com/phonegap/phonegap-plugin-push/issues/458)
+- Getting NotRegistered error when sending GCM push notification, but the device never unregistered [\#419](https://github.com/phonegap/phonegap-plugin-push/issues/419)
+- Changelog neglected [\#412](https://github.com/phonegap/phonegap-plugin-push/issues/412)
+
+## [1.5.2](https://github.com/phonegap/phonegap-plugin-push/tree/1.5.1) (2015-12-21)
+[Full Changelog](https://github.com/phonegap/phonegap-plugin-push/compare/1.5.1...1.5.2)
+
+**Fixed bugs:**
+
+- notification\_applicationDidBecomeActive method [\#447](https://github.com/phonegap/phonegap-plugin-push/issues/447)
+
+## [1.5.1](https://github.com/phonegap/phonegap-plugin-push/tree/1.5.1) (2015-12-18)
+[Full Changelog](https://github.com/phonegap/phonegap-plugin-push/compare/1.5.0...1.5.1)
+
+**Closed issues:**
+
+- Unsubscribing to topics should not clear event handlers [\#443](https://github.com/phonegap/phonegap-plugin-push/issues/443)
+
+## [1.5.0](https://github.com/phonegap/phonegap-plugin-push/tree/1.5.0) (2015-12-18)
+[Full Changelog](https://github.com/phonegap/phonegap-plugin-push/compare/1.4.5...1.5.0)
+
+**Fixed bugs:**
+
+- Make sure iOS/Android can receive the same GCM payload [\#401](https://github.com/phonegap/phonegap-plugin-push/issues/401)
+
+**Closed issues:**
+
+- Using stacking notifications but only able to process one [\#435](https://github.com/phonegap/phonegap-plugin-push/issues/435)
+- Cant find stacking docs [\#430](https://github.com/phonegap/phonegap-plugin-push/issues/430)
+- Android Marshmallow 6.0 push icon [\#422](https://github.com/phonegap/phonegap-plugin-push/issues/422)
+- Distinguish between 'android' or 'ios' on registration event [\#418](https://github.com/phonegap/phonegap-plugin-push/issues/418)
+- Phonegap Build Issues for 1.4.X [\#417](https://github.com/phonegap/phonegap-plugin-push/issues/417)
+- using in Ionic [\#416](https://github.com/phonegap/phonegap-plugin-push/issues/416)
+- notification event not called on ios [\#414](https://github.com/phonegap/phonegap-plugin-push/issues/414)
+- \[docs\] detail on deviceready dependency [\#410](https://github.com/phonegap/phonegap-plugin-push/issues/410)
+- iOS: Plugin does not start [\#404](https://github.com/phonegap/phonegap-plugin-push/issues/404)
+- Process notifications in background [\#398](https://github.com/phonegap/phonegap-plugin-push/issues/398)
+- On iOS 9 the badge does not clear [\#395](https://github.com/phonegap/phonegap-plugin-push/issues/395)
+- Background notification OK, but event "notification" never called [\#387](https://github.com/phonegap/phonegap-plugin-push/issues/387)
+- Android action button callback not triggered   [\#298](https://github.com/phonegap/phonegap-plugin-push/issues/298)
+
+## [1.4.5](https://github.com/phonegap/phonegap-plugin-push/tree/1.4.5) (2015-12-03)
+[Full Changelog](https://github.com/phonegap/phonegap-plugin-push/compare/1.4.4...1.4.5)
+
+**Fixed bugs:**
+
+- register -\> unregister lifecycle [\#368](https://github.com/phonegap/phonegap-plugin-push/issues/368)
+
+**Closed issues:**
+
+- jshint support [\#380](https://github.com/phonegap/phonegap-plugin-push/issues/380)
+- Platform support [\#379](https://github.com/phonegap/phonegap-plugin-push/issues/379)
+- Ionic implemenation [\#364](https://github.com/phonegap/phonegap-plugin-push/issues/364)
+- on registration callback getting called repeatedly. [\#353](https://github.com/phonegap/phonegap-plugin-push/issues/353)
+- on\("notification"\) dont fire when the app its open [\#351](https://github.com/phonegap/phonegap-plugin-push/issues/351)
+
+## [1.4.4](https://github.com/phonegap/phonegap-plugin-push/tree/1.4.4) (2015-11-20)
+[Full Changelog](https://github.com/phonegap/phonegap-plugin-push/compare/1.4.3...1.4.4)
+
+**Fixed bugs:**
+
+- InstanceID.getToken\(\) not called in an Intent [\#354](https://github.com/phonegap/phonegap-plugin-push/issues/354)
+- Handle both data and notification payloads in the same GCM push [\#343](https://github.com/phonegap/phonegap-plugin-push/issues/343)
+- \[INSTALL\_FAILED\_CONFLICTING\_PROVIDER\] [\#320](https://github.com/phonegap/phonegap-plugin-push/issues/320)
+- Getting "Error : Empty registration ID received from GCM" [\#315](https://github.com/phonegap/phonegap-plugin-push/issues/315)
+
+**Closed issues:**
+
+- xcode build fails with phonegap-plugin-push [\#358](https://github.com/phonegap/phonegap-plugin-push/issues/358)
+- App crashes after adding push plugin and wikipedia app installed [\#357](https://github.com/phonegap/phonegap-plugin-push/issues/357)
+- Conflict when compiling with com.google.maps [\#355](https://github.com/phonegap/phonegap-plugin-push/issues/355)
+
+## [1.4.3](https://github.com/phonegap/phonegap-plugin-push/tree/1.4.3) (2015-11-18)
+[Full Changelog](https://github.com/phonegap/phonegap-plugin-push/compare/1.4.2...1.4.3)
+
+**Closed issues:**
+
+- \[Question\] about the action's icon color [\#348](https://github.com/phonegap/phonegap-plugin-push/issues/348)
+- Can I access Web API's from 'notification' handler? [\#335](https://github.com/phonegap/phonegap-plugin-push/issues/335)
+- Init Error: Missing Instance ID Service [\#334](https://github.com/phonegap/phonegap-plugin-push/issues/334)
+- Install issue [\#332](https://github.com/phonegap/phonegap-plugin-push/issues/332)
+- Multiple Apps gets error [\#330](https://github.com/phonegap/phonegap-plugin-push/issues/330)
+- Can't find variable PushNotification [\#328](https://github.com/phonegap/phonegap-plugin-push/issues/328)
+- When app is in background, clicking on Android notification in shade opens app but does not trigger the on\('notification'\) event handler [\#326](https://github.com/phonegap/phonegap-plugin-push/issues/326)
+- "Missing Command Error" when running in browser [\#318](https://github.com/phonegap/phonegap-plugin-push/issues/318)
+- Small icon not working [\#316](https://github.com/phonegap/phonegap-plugin-push/issues/316)
+- Duplicate push notifications happening on iOS when phone is unlocked [\#309](https://github.com/phonegap/phonegap-plugin-push/issues/309)
+- Is it possible to add badge on Android portion. [\#308](https://github.com/phonegap/phonegap-plugin-push/issues/308)
+- \[just a question\] about the priority [\#306](https://github.com/phonegap/phonegap-plugin-push/issues/306)
+- Android - After unregister and reregister no notifications [\#304](https://github.com/phonegap/phonegap-plugin-push/issues/304)
+- Amazon-Fireos and Blackberry 10 support [\#300](https://github.com/phonegap/phonegap-plugin-push/issues/300)
+- 1.4.x not showing notification on Android [\#299](https://github.com/phonegap/phonegap-plugin-push/issues/299)
+- "push.unregister" not really work in iOS [\#296](https://github.com/phonegap/phonegap-plugin-push/issues/296)
+
+## [1.4.2](https://github.com/phonegap/phonegap-plugin-push/tree/1.4.2) (2015-11-03)
+[Full Changelog](https://github.com/phonegap/phonegap-plugin-push/compare/1.4.1...1.4.2)
+
+**Closed issues:**
+
+- data.registrationId is empty string "" on register event callback [\#295](https://github.com/phonegap/phonegap-plugin-push/issues/295)
+
+## [1.4.1](https://github.com/phonegap/phonegap-plugin-push/tree/1.4.1) (2015-11-02)
+[Full Changelog](https://github.com/phonegap/phonegap-plugin-push/compare/1.4.0...1.4.1)
 
 ## [1.4.0](https://github.com/phonegap/phonegap-plugin-push/tree/1.4.0) (2015-10-27)
 [Full Changelog](https://github.com/phonegap/phonegap-plugin-push/compare/1.3.0...1.4.0)
