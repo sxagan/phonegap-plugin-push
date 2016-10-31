@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
+import android.os.StrictMode;
 
 import com.google.android.gms.gcm.GcmPubSub;
 import com.google.android.gms.iid.InstanceID;
@@ -19,6 +20,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
+import java.io.FileNotFoundException;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -327,7 +329,7 @@ public class PushPlugin extends CordovaPlugin implements PushConstants {
         SharedPreferences sharedPref = context.getSharedPreferences(pkgName,context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPref.edit();
 
-        editor.putString("pushEchoUrl", url);
+        editor.putString("pushEchoUrl", urlstr);
         Boolean success = editor.commit();
         Log.d(LOG_TAG, "registerPushEcho=>success: " + Boolean.toString(success));
         doPushEcho(context, null);
@@ -336,16 +338,16 @@ public class PushPlugin extends CordovaPlugin implements PushConstants {
     /*
     *  "{"data":{"json":{"postid":"c04d2ce8-48c2-4d4d-87a5-8c785a761c56","type":"replies"},"sender":"Dev acc @ Talking dogs please ","msg":"New","ts":"2016-05-26T08:46:05.260Z","sendericon":""},"icon":"assets://steroids/build/icons/icon.png","smallIcon":"app_icon","sound":"assets://steroids/build/audio/s03.mp3","soundname":null}"
     * */
-    public static boolean doPushEcho(Context ctx, String echopayload){
-        Context context;
+    public static boolean doPushEcho(Context context, String echopayload){
+        //Context context;
         Log.d(LOG_TAG, "doPushEcho=>echopayload: " + (echopayload != null ? echopayload : "No payload given") );
-        if(ctx != null){
+        /*if(ctx != null){
             context = ctx;
             Log.d(LOG_TAG, "doPushEcho=>context: " + "using param ctx");
         }else{
             context = getApplicationContext();
             Log.d(LOG_TAG, "doPushEcho=>context: " + "using cordova activity context");
-        }
+        }*/
         String pkgName = context.getPackageName();
         Log.d(LOG_TAG, "doPushEcho=>pkgName: " + pkgName);
         SharedPreferences sharedPref = context.getSharedPreferences(pkgName,context.MODE_PRIVATE);
