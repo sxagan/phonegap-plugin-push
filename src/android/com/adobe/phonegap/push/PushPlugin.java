@@ -206,8 +206,8 @@ public class PushPlugin extends CordovaPlugin implements PushConstants {
         } else if (REGISTERPUSHECHO.equals(action)) {
             cordova.getThreadPool().execute(new Runnable() {
                 public void run() {
-                    Log.v(LOG_TAG, "registerPushEcho"+data.getJSONObject(0).toString());
                     try {
+                        Log.v(LOG_TAG, "registerPushEcho"+data.getJSONObject(0).toString());
                         String urlStr = data.getJSONObject(0).toString();
                         registerPushEcho(getApplicationContext(),urlStr);
                     } catch (JSONException e) {
