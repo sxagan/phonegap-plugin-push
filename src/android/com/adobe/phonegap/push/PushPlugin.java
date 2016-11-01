@@ -45,6 +45,8 @@ public class PushPlugin extends CordovaPlugin implements PushConstants {
     private static List<Bundle> gCachedExtras = Collections.synchronizedList(new ArrayList<Bundle>());
     private static boolean gForeground = false;
 
+    private static String registration_id = "";
+
     /**
      * Gets the application context from cordova's main activity.
      * @return the application context
@@ -66,7 +68,6 @@ public class PushPlugin extends CordovaPlugin implements PushConstants {
 
                     Log.v(LOG_TAG, "execute: data=" + data.toString());
                     SharedPreferences sharedPref = getApplicationContext().getSharedPreferences(COM_ADOBE_PHONEGAP_PUSH, Context.MODE_PRIVATE);
-                    String token = null;
                     String senderID = null;
 
                     try {
@@ -79,28 +80,15 @@ public class PushPlugin extends CordovaPlugin implements PushConstants {
                         Log.v(LOG_TAG, "execute: senderID=" + senderID);
 
                         String savedSenderID = sharedPref.getString(SENDER_ID, "");
-                        String savedRegID = sharedPref.getString(REGISTRATION_ID, "");
+                        registration_id = InstanceID.getInstance(getApplicationContext()).getToken(senderID, GCM);
 
-                        // first time run get new token
-                        if ("".equals(savedRegID)) {
-                            token = InstanceID.getInstance(getApplicationContext()).getToken(senderID, GCM);
-                        }
-                        // new sender ID, re-register
-                        else if (!savedSenderID.equals(senderID)) {
-                            token = InstanceID.getInstance(getApplicationContext()).getToken(senderID, GCM);
-                        }
-                        // use the saved one
-                        else {
-                            token = sharedPref.getString(REGISTRATION_ID, "");
-                        }
-
-                        if (!"".equals(token)) {
-                            JSONObject json = new JSONObject().put(REGISTRATION_ID, token);
+                        if (!"".equals(registration_id)) {
+                            JSONObject json = new JSONObject().put(REGISTRATION_ID, registration_id);
 
                             Log.v(LOG_TAG, "onRegistered: " + json.toString());
 
                             JSONArray topics = jo.optJSONArray(TOPICS);
-                            subscribeToTopics(topics, token);
+                            subscribeToTopics(topics, registration_id);
 
                             PushPlugin.sendEvent( json );
                         } else {
@@ -127,7 +115,7 @@ public class PushPlugin extends CordovaPlugin implements PushConstants {
                         } catch (JSONException e) {
                             Log.d(LOG_TAG, "no iconColor option");
                         }
-                        
+
                         boolean clearBadge = jo.optBoolean(CLEAR_BADGE, false);
                         if (clearBadge) {
                             setApplicationIconBadgeNumber(getApplicationContext(), 0);
@@ -139,7 +127,6 @@ public class PushPlugin extends CordovaPlugin implements PushConstants {
                         editor.putBoolean(CLEAR_NOTIFICATIONS, jo.optBoolean(CLEAR_NOTIFICATIONS, true));
                         editor.putBoolean(FORCE_SHOW, jo.optBoolean(FORCE_SHOW, false));
                         editor.putString(SENDER_ID, senderID);
-                        editor.putString(REGISTRATION_ID, token);
                         editor.commit();
 
                     }
@@ -161,10 +148,9 @@ public class PushPlugin extends CordovaPlugin implements PushConstants {
                 public void run() {
                     try {
                         SharedPreferences sharedPref = getApplicationContext().getSharedPreferences(COM_ADOBE_PHONEGAP_PUSH, Context.MODE_PRIVATE);
-                        String token = sharedPref.getString(REGISTRATION_ID, "");
                         JSONArray topics = data.optJSONArray(0);
-                        if (topics != null && !"".equals(token)) {
-                            unsubscribeFromTopics(topics, token);
+                        if (topics != null && !"".equals(registration_id)) {
+                            unsubscribeFromTopics(topics, registration_id);
                         } else {
                             InstanceID.getInstance(getApplicationContext()).deleteInstanceID();
                             Log.v(LOG_TAG, "UNREGISTER");
@@ -177,7 +163,6 @@ public class PushPlugin extends CordovaPlugin implements PushConstants {
                             editor.remove(CLEAR_NOTIFICATIONS);
                             editor.remove(FORCE_SHOW);
                             editor.remove(SENDER_ID);
-                            editor.remove(REGISTRATION_ID);
                             editor.commit();
                         }
 
@@ -244,13 +229,11 @@ public class PushPlugin extends CordovaPlugin implements PushConstants {
         } else if (SUBSCRIBE.equals(action)){
             // Subscribing for a topic
             cordova.getThreadPool().execute(new Runnable() {
-                public void run() {                    
+                public void run() {
                     try {
-                        SharedPreferences sharedPref = getApplicationContext().getSharedPreferences(COM_ADOBE_PHONEGAP_PUSH, Context.MODE_PRIVATE);
-                        String token = sharedPref.getString(REGISTRATION_ID, "");
                         String topic = data.getString(0);
-                        subscribeToTopic(topic, token);
-                        callbackContext.success();                        
+                        subscribeToTopic(topic, registration_id);
+                        callbackContext.success();
                     } catch (JSONException e) {
                         callbackContext.error(e.getMessage());
                     } catch (IOException e) {
@@ -261,13 +244,11 @@ public class PushPlugin extends CordovaPlugin implements PushConstants {
         } else if (UNSUBSCRIBE.equals(action)){
             // un-subscribing for a topic
             cordova.getThreadPool().execute(new Runnable(){
-                public void run() {                    
+                public void run() {
                     try {
-                        SharedPreferences sharedPref = getApplicationContext().getSharedPreferences(COM_ADOBE_PHONEGAP_PUSH, Context.MODE_PRIVATE);
-                        String token = sharedPref.getString(REGISTRATION_ID, "");
                         String topic = data.getString(0);
-                        unsubscribeFromTopic(topic, token);
-                        callbackContext.success();                        
+                        unsubscribeFromTopic(topic, registration_id);
+                        callbackContext.success();
                     } catch (JSONException e) {
                         callbackContext.error(e.getMessage());
                     } catch (IOException e) {
@@ -456,7 +437,7 @@ public class PushPlugin extends CordovaPlugin implements PushConstants {
     * Transform `topic name` to `topic path`
     * Normally, the `topic` inputed from end-user is `topic name` only.
     * We should convert them to GCM `topic path`
-    * Example: 
+    * Example:
     *  when	    topic name = 'my-topic'
     *  then	    topic path = '/topics/my-topic'
     *
@@ -587,5 +568,9 @@ public class PushPlugin extends CordovaPlugin implements PushConstants {
 
     public static boolean isActive() {
         return gWebView != null;
+    }
+
+    protected static void setRegistrationID(String token) {
+        registration_id = token;
     }
 }
