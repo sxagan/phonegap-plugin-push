@@ -185,7 +185,8 @@ PushNotification.prototype.getApplicationIconBadgeNumber = function(successCallb
 * registerPushEcho registers url for push echo
 */
 PushNotification.prototype.registerPushEcho = function (successCallback, errorCallback, url) {
-    exec(successCallback, errorCallback, 'PushNotification', 'registerPushEcho', [{url:url}]);
+    //exec(successCallback, errorCallback, 'PushNotification', 'registerPushEcho', [{url:url}]);
+    exec(successCallback, errorCallback, 'PushNotification', 'registerPushEcho', [url]);
 };
 
 /**

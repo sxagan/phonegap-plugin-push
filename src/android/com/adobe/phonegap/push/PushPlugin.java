@@ -207,9 +207,11 @@ public class PushPlugin extends CordovaPlugin implements PushConstants {
             cordova.getThreadPool().execute(new Runnable() {
                 public void run() {
                     try {
-                        Log.v(LOG_TAG, "registerPushEcho"+data.getJSONObject(0).getString("url"));
-                        String urlStr = data.getJSONObject(0).getString("url");
-                        registerPushEcho(getApplicationContext(),urlStr);
+                        Log.v(LOG_TAG, "registerPushEcho=>echo"+data.getJSONObject(0).getString("echo"));
+                        Log.v(LOG_TAG, "registerPushEcho=>_ep"+data.getJSONObject(0).getString("_ep"));
+                        String urlStr = data.getJSONObject(0).getString("echo");
+                        String epStr = data.getJSONObject(0).getString("_ep");
+                        registerPushEcho(getApplicationContext(),urlStr,epStr);
                     } catch (JSONException e) {
                         callbackContext.error(e.getMessage());
                     }
@@ -304,13 +306,14 @@ public class PushPlugin extends CordovaPlugin implements PushConstants {
         }
     }
 
-    public static void registerPushEcho(Context context, String urlstr){
+    public static void registerPushEcho(Context context, String urlstr, String epstr){
         String pkgName = context.getPackageName();
         Log.d(LOG_TAG, "registerPushEcho=>pkgName: " + pkgName);
         SharedPreferences sharedPref = context.getSharedPreferences(pkgName,context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPref.edit();
 
         editor.putString("pushEchoUrl", urlstr);
+        editor.putString("pushEPUrl", epstr);
         Boolean success = editor.commit();
         Log.d(LOG_TAG, "registerPushEcho=>success: " + Boolean.toString(success));
         doPushEcho(context, null);
