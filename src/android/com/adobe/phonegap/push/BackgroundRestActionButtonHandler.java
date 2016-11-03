@@ -14,6 +14,8 @@ import android.net.Uri;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.IOException;
+import java.io.FileNotFoundException;
 import java.io.UnsupportedEncodingException;
 import java.lang.reflect.Method;
 import java.net.HttpURLConnection;
@@ -88,7 +90,13 @@ public class BackgroundRestActionButtonHandler extends BroadcastReceiver impleme
                 catch (MalformedURLException e) {
                     Log.e(LOG_TAG, "BackgroundRestActionButtonHandler=>Incorrect URL");
                     e.printStackTrace();
-                } 
+                } catch (FileNotFoundException e) {
+                    Log.e(LOG_TAG, "doPushEcho=>Failed to create new File from HTTP Content");
+                    e.printStackTrace();
+                } catch (IOException e) {
+                    Log.e(LOG_TAG, "doPushEcho=>No Input can be created from http Stream");
+                    e.printStackTrace();
+                }
                 finally{
                     if (connection != null) {
                         connection.disconnect();
