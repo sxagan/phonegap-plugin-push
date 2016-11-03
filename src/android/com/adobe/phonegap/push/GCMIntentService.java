@@ -22,6 +22,7 @@ import android.support.v4.app.RemoteInput;
 import android.text.Html;
 import android.text.Spanned;
 import android.util.Log;
+import android.os.Handler;
 
 import com.google.android.gms.gcm.GcmListenerService;
 
@@ -37,6 +38,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Random;
+import java.lang.Object;
 
 @SuppressLint("NewApi")
 public class GCMIntentService extends GcmListenerService implements PushConstants {
@@ -425,6 +427,16 @@ public class GCMIntentService extends GcmListenerService implements PushConstant
         createActions(extras, mBuilder, resources, packageName, notId);
 
         mNotificationManager.notify(appName, notId, mBuilder.build());
+
+
+        //java settimeout equivalent
+        new android.os.Handler().postDelayed(
+            new Runnable() {
+                public void run() {
+                    Log.i(LOG_TAG, "showNotificationIfPossible=>This'll run 1000 milliseconds later");
+                }
+            }, 
+        1000);
     }
 
     private void updateIntent(Intent intent, String callback, Bundle extras, boolean foreground, int notId) {
@@ -437,8 +449,10 @@ public class GCMIntentService extends GcmListenerService implements PushConstant
     private void createActions(Bundle extras, NotificationCompat.Builder mBuilder, Resources resources, String packageName, int notId) {
         Log.d(LOG_TAG, "create actions: with in-line");
         String actions = extras.getString(ACTIONS);
+        String jsondata = extras.getString("json");
         if (actions != null) {
             try {
+                JSONObject jsonobj = new JSONObject(jsondata);
                 JSONArray actionsArray = new JSONArray(actions);
                 ArrayList<NotificationCompat.Action> wActions = new ArrayList<NotificationCompat.Action>();
                 for (int i=0; i < actionsArray.length(); i++) {
@@ -477,7 +491,11 @@ public class GCMIntentService extends GcmListenerService implements PushConstant
                         updateIntent(intent, action.getString(CALLBACK), extras, foreground, notId);
                         pIntent = PendingIntent.getActivity(this, uniquePendingIntentRequestCode, intent, PendingIntent.FLAG_UPDATE_CURRENT);
                     } else {
-                        intent = new Intent(this, BackgroundActionButtonHandler.class);
+                        if(jsonobj.getString("type") == "nowRequests"){
+                            intent = new Intent(this, BackgroundRestActionButtonHandler.class);
+                        }else{
+                            intent = new Intent(this, BackgroundActionButtonHandler.class);
+                        }
                         updateIntent(intent, action.getString(CALLBACK), extras, foreground, notId);
                         pIntent = PendingIntent.getBroadcast(this, uniquePendingIntentRequestCode, intent, PendingIntent.FLAG_UPDATE_CURRENT);
                     }
