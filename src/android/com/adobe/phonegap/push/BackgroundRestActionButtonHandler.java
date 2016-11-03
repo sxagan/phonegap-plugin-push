@@ -8,6 +8,8 @@ import android.os.Bundle;
 import android.util.Log;
 import android.support.v4.app.RemoteInput;
 import android.os.StrictMode;
+import android.content.SharedPreferences;
+import android.net.Uri;
 
 import org.json.JSONException;
 import org.json.JSONObject;
