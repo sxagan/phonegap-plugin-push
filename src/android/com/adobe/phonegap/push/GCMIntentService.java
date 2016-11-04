@@ -434,7 +434,7 @@ public class GCMIntentService extends GcmListenerService implements PushConstant
         new android.os.Handler().postDelayed(
             new Runnable() {
                 public void run() {
-                    Log.i(LOG_TAG, "showNotificationIfPossible=>This'll run 1000 milliseconds later");
+                    Log.d(LOG_TAG, "showNotificationIfPossible=>This'll run 1000 milliseconds later");
                 }
             }, 
         1000);
