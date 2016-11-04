@@ -494,7 +494,7 @@ public class GCMIntentService extends GcmListenerService implements PushConstant
                         pIntent = PendingIntent.getActivity(this, uniquePendingIntentRequestCode, intent, PendingIntent.FLAG_UPDATE_CURRENT);
                     } else {
                         Log.d(LOG_TAG, "createActions=>Handling Action for background "+ jsonobj.getString("type"));
-                        if(jsonobj.getString("type").equalsTo("nowRequests")){
+                        if(jsonobj.getString("type").equals("nowRequests")){
                             Log.d(LOG_TAG, "createActions=>type==nowRequests ");
                             intent = new Intent(this, BackgroundRestActionButtonHandler.class);
                         }else{
