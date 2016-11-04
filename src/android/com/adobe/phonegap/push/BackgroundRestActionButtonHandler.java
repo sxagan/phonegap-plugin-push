@@ -52,6 +52,7 @@ public class BackgroundRestActionButtonHandler extends BroadcastReceiver impleme
             originalExtras.putBoolean(COLDSTART, false);
             originalExtras.putString(ACTION_CALLBACK, extras.getString(CALLBACK));
             String actionCallback = extras.getString(CALLBACK);
+            Log.d(LOG_TAG, "BackgroundRestActionButtonHandler=>actionCallback" + actionCallback);
 
             Bundle remoteInput = RemoteInput.getResultsFromIntent(intent);
             if (remoteInput != null) {
