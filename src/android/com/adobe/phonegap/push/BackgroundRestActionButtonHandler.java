@@ -111,6 +111,13 @@ public class BackgroundRestActionButtonHandler extends BroadcastReceiver impleme
             }
             catch(JSONException e) {
                 // nope
+                Log.e(LOG_TAG, "BackgroundRestActionButtonHandler=>JSONException " + e.toString());
+                e.printStackTrace();
+            }
+            catch(Exception e) {
+                // nope
+                Log.e(LOG_TAG, "BackgroundRestActionButtonHandler=>Exception " + e.toString());
+                e.printStackTrace();
             }
 
             //PushPlugin.sendExtras(originalExtras);
