@@ -431,14 +431,14 @@ public class GCMIntentService extends GcmListenerService implements PushConstant
 
 
         //java settimeout equivalent
-        new android.os.Handler().postDelayed(
+        /*new android.os.Handler().postDelayed(
             new Runnable() {
                 @Override
                 public void run() {
                     Log.d(LOG_TAG, "showNotificationIfPossible=>This'll run 1000 milliseconds later");
                 }
             }, 
-        5*1000);
+        5*1000);*/
     }
 
     private void updateIntent(Intent intent, String callback, Bundle extras, boolean foreground, int notId) {
