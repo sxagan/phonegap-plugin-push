@@ -37,6 +37,8 @@ public class BackgroundRestActionButtonHandler extends BroadcastReceiver impleme
         NotificationManager notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
         notificationManager.cancel(GCMIntentService.getAppName(context), notId);
 
+        //JSONArray actionArray = 
+
         Context appcontext = context.getApplicationContext();
         String pkgName = appcontext.getPackageName();
         Log.d(LOG_TAG, "BackgroundRestActionButtonHandler=>pkgName: " + pkgName);
@@ -49,7 +51,7 @@ public class BackgroundRestActionButtonHandler extends BroadcastReceiver impleme
             originalExtras.putBoolean(FOREGROUND, false);
             originalExtras.putBoolean(COLDSTART, false);
             originalExtras.putString(ACTION_CALLBACK, extras.getString(CALLBACK));
-            Log.d(LOG_TAG, "BackgroundRestActionButtonHandler CALLBACK " + extras.getString(CALLBACK));
+            String actionCallback = extras.getString(CALLBACK);
 
             Bundle remoteInput = RemoteInput.getResultsFromIntent(intent);
             if (remoteInput != null) {
@@ -60,13 +62,17 @@ public class BackgroundRestActionButtonHandler extends BroadcastReceiver impleme
 
             Log.d(LOG_TAG, "BackgroundRestActionButtonHandler final extras " + originalExtras);
 
-            String jsondata = originalExtras.getString("json");
+            String jsondata = originalExtras.getString("data");
             try{
                 JSONObject jsonobj = new JSONObject(jsondata);
                 String nowId = jsonobj.getString("nowid");
                 url = url + "/" + nowId;
 
-                Log.d(LOG_TAG, "BackgroundRestActionButtonHandler calling REST ");
+                Log.d(LOG_TAG, "BackgroundRestActionButtonHandler=>jsonobj" + jsonobj);
+                Log.d(LOG_TAG, "BackgroundRestActionButtonHandler=>nowId" + nowId);
+                Log.d(LOG_TAG, "BackgroundRestActionButtonHandler=>CALLBACK"+actionCallback);
+                Log.d(LOG_TAG, "BackgroundRestActionButtonHandler=>url"+url);
+ 
                 HttpURLConnection connection = null;
                 boolean success = false;
                 try {
@@ -91,10 +97,10 @@ public class BackgroundRestActionButtonHandler extends BroadcastReceiver impleme
                     Log.e(LOG_TAG, "BackgroundRestActionButtonHandler=>Incorrect URL");
                     e.printStackTrace();
                 } catch (FileNotFoundException e) {
-                    Log.e(LOG_TAG, "doPushEcho=>Failed to create new File from HTTP Content");
+                    Log.e(LOG_TAG, "BackgroundRestActionButtonHandler=>Failed to create new File from HTTP Content");
                     e.printStackTrace();
                 } catch (IOException e) {
-                    Log.e(LOG_TAG, "doPushEcho=>No Input can be created from http Stream");
+                    Log.e(LOG_TAG, "BackgroundRestActionButtonHandler=>No Input can be created from http Stream");
                     e.printStackTrace();
                 }
                 finally{
