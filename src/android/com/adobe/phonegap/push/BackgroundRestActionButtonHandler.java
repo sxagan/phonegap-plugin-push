@@ -61,15 +61,18 @@ public class BackgroundRestActionButtonHandler extends BroadcastReceiver impleme
                 originalExtras.putString(INLINE_REPLY, inputString);
             }
 
-            Log.d(LOG_TAG, "BackgroundRestActionButtonHandler final extras " + originalExtras);
+            //Log.d(LOG_TAG, "BackgroundRestActionButtonHandler final extras " + originalExtras);
 
             String jsondata = originalExtras.getString("data");
             try{
                 JSONObject jsonobj = new JSONObject(jsondata);
-                String nowId = jsonobj.getString("nowid");
+                Log.d(LOG_TAG, "BackgroundRestActionButtonHandler=>jsonobj" + jsonobj);
+
+                JSONObject ajsonobj = jsonobj.getJSONObject("json");
+                Log.d(LOG_TAG, "BackgroundRestActionButtonHandler=>ajsonobj" + jsonobj);
+                String nowId = ajsonobj.getString("nowid");
                 url = url + "/" + nowId;
 
-                Log.d(LOG_TAG, "BackgroundRestActionButtonHandler=>jsonobj" + jsonobj);
                 Log.d(LOG_TAG, "BackgroundRestActionButtonHandler=>nowId" + nowId);
                 Log.d(LOG_TAG, "BackgroundRestActionButtonHandler=>CALLBACK"+actionCallback);
                 Log.d(LOG_TAG, "BackgroundRestActionButtonHandler=>url"+url);
