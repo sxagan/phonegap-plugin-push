@@ -23,6 +23,12 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLEncoder;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
+import org.joda.time.DateTime;
+
 
 public class BackgroundRestActionButtonHandler extends BroadcastReceiver implements PushConstants {
     private static String LOG_TAG = "PushPlugin_BackgroundRestActionButtonHandler";
@@ -72,6 +78,16 @@ public class BackgroundRestActionButtonHandler extends BroadcastReceiver impleme
                 Log.d(LOG_TAG, "BackgroundRestActionButtonHandler=>ajsonobj" + ajsonobj);
                 String nowId = ajsonobj.getString("nowid");
                 url = url + "?nrid=" + nowId;
+
+                JSONObject rawjson = ajsonobj.getJSONObject("rawJson");
+                Log.d(LOG_TAG, "BackgroundRestActionButtonHandler=>rawjson" + rawjson);
+                String expDate = rawjson.getString("expirytime");
+                DateTime dtexp = new DateTime(expDate) ;
+                DateTime dtnow = new DateTime();
+
+                Log.d(LOG_TAG, "BackgroundRestActionButtonHandler=>dtexp" + dtexp.toString());
+                Log.d(LOG_TAG, "BackgroundRestActionButtonHandler=>dtnow" + dtnow.toString());
+
 
                 Log.d(LOG_TAG, "BackgroundRestActionButtonHandler=>nowId" + nowId);
                 Log.d(LOG_TAG, "BackgroundRestActionButtonHandler=>CALLBACK"+actionCallback);
