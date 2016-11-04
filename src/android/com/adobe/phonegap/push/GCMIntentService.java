@@ -282,6 +282,7 @@ public class GCMIntentService extends GcmListenerService implements PushConstant
     private void showNotificationIfPossible (Context context, Bundle extras) {
 
         // Send a notification if there is a message or title, otherwise just send data
+        Log.d(LOG_TAG, "extra =" + extras.toString() );
         String message = extras.getString(MESSAGE);
         String title = extras.getString(TITLE);
         String contentAvailable = extras.getString(CONTENT_AVAILABLE);
@@ -466,6 +467,7 @@ public class GCMIntentService extends GcmListenerService implements PushConstant
                     boolean foreground = action.optBoolean(FOREGROUND, true);
                     boolean inline = action.optBoolean("inline", false);
                     Intent intent = null;
+                    Log.d(LOG_TAG, "createActions=>type==isForeground: "+String.valueOf(foreground));
                     PendingIntent pIntent = null;
                     if (inline) {
                         Log.d(LOG_TAG, "Version: " + android.os.Build.VERSION.SDK_INT + " = " + android.os.Build.VERSION_CODES.M);
@@ -491,7 +493,9 @@ public class GCMIntentService extends GcmListenerService implements PushConstant
                         updateIntent(intent, action.getString(CALLBACK), extras, foreground, notId);
                         pIntent = PendingIntent.getActivity(this, uniquePendingIntentRequestCode, intent, PendingIntent.FLAG_UPDATE_CURRENT);
                     } else {
+                        Log.d(LOG_TAG, "createActions=>Handling Action for background "+ jsonobj.getString("type"));
                         if(jsonobj.getString("type") == "nowRequests"){
+                            Log.d(LOG_TAG, "createActions=>type==nowRequests ");
                             intent = new Intent(this, BackgroundRestActionButtonHandler.class);
                         }else{
                             intent = new Intent(this, BackgroundActionButtonHandler.class);

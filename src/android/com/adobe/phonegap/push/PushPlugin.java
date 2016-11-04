@@ -336,6 +336,7 @@ public class PushPlugin extends CordovaPlugin implements PushConstants {
         Log.d(LOG_TAG, "doPushEcho=>pkgName: " + pkgName);
         SharedPreferences sharedPref = context.getSharedPreferences(pkgName,context.MODE_PRIVATE);
         String url =  sharedPref.getString("pushEchoUrl","");
+        Log.d(LOG_TAG, "doPushEcho=>echoUrl: " + url);
         if(echopayload != null){
             String upayload = "";
             try {
