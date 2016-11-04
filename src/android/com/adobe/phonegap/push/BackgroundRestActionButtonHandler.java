@@ -52,7 +52,7 @@ public class BackgroundRestActionButtonHandler extends BroadcastReceiver impleme
             originalExtras.putBoolean(COLDSTART, false);
             originalExtras.putString(ACTION_CALLBACK, extras.getString(CALLBACK));
             String actionCallback = extras.getString(CALLBACK);
-            Log.d(LOG_TAG, "BackgroundRestActionButtonHandler=>actionCallback" + actionCallback);
+            Log.d(LOG_TAG, "BackgroundRestActionButtonHandler=>actionCallback: " + actionCallback);
 
             Bundle remoteInput = RemoteInput.getResultsFromIntent(intent);
             if (remoteInput != null) {
@@ -76,42 +76,50 @@ public class BackgroundRestActionButtonHandler extends BroadcastReceiver impleme
                 Log.d(LOG_TAG, "BackgroundRestActionButtonHandler=>nowId" + nowId);
                 Log.d(LOG_TAG, "BackgroundRestActionButtonHandler=>CALLBACK"+actionCallback);
                 Log.d(LOG_TAG, "BackgroundRestActionButtonHandler=>url"+url);
- 
-                HttpURLConnection connection = null;
-                boolean success = false;
-                try {
-                    URL urla = new URL(url);
-                    connection = (HttpURLConnection) urla.openConnection();
-                    StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
-                    StrictMode.setThreadPolicy(policy);
-                    connection.setRequestMethod("GET");
-                    connection.setRequestProperty("Connection", "close");
-                    connection.setConnectTimeout(5000);
-                    connection.connect();
-                    int code = connection.getResponseCode();
+                
+                if(actionCallback.equals("app.pickup")){
+                    HttpURLConnection connection = null;
+                    boolean success = false;
+                    try {
+                        URL urla = new URL(url);
+                        Log.d(LOG_TAG, "BackgroundRestActionButtonHandler=>set Url" + urla.toString());
+                        connection = (HttpURLConnection) urla.openConnection();
+                        StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
+                        StrictMode.setThreadPolicy(policy);
+                        connection.setRequestMethod("GET");
+                        connection.setRequestProperty("Connection", "close");
+                        connection.setConnectTimeout(5000);
+                        connection.connect();
+                        Log.d(LOG_TAG, "BackgroundRestActionButtonHandler=>doconnection");
+                        int code = connection.getResponseCode();
 
-                    if(code == HttpURLConnection.HTTP_OK){
-                        //connection.disconnect();
-                        Log.d(LOG_TAG, "BackgroundRestActionButtonHandler=>connection=>responsecode: " + Integer.toString(code));
-                        success = true;
-                    }
+                        if(code == HttpURLConnection.HTTP_OK){
+                            //connection.disconnect();
+                            Log.d(LOG_TAG, "BackgroundRestActionButtonHandler=>connection=>responsecode: " + Integer.toString(code));
+                            success = true;
+                        }
 
-                }
-                catch (MalformedURLException e) {
-                    Log.e(LOG_TAG, "BackgroundRestActionButtonHandler=>Incorrect URL");
-                    e.printStackTrace();
-                } catch (FileNotFoundException e) {
-                    Log.e(LOG_TAG, "BackgroundRestActionButtonHandler=>Failed to create new File from HTTP Content");
-                    e.printStackTrace();
-                } catch (IOException e) {
-                    Log.e(LOG_TAG, "BackgroundRestActionButtonHandler=>No Input can be created from http Stream");
-                    e.printStackTrace();
-                }
-                finally{
-                    if (connection != null) {
-                        connection.disconnect();
                     }
+                    catch (MalformedURLException e) {
+                        Log.e(LOG_TAG, "BackgroundRestActionButtonHandler=>Incorrect URL");
+                        e.printStackTrace();
+                    } catch (FileNotFoundException e) {
+                        Log.e(LOG_TAG, "BackgroundRestActionButtonHandler=>Failed to create new File from HTTP Content");
+                        e.printStackTrace();
+                    } catch (IOException e) {
+                        Log.e(LOG_TAG, "BackgroundRestActionButtonHandler=>No Input can be created from http Stream");
+                        e.printStackTrace();
+                    }
+                    finally{
+                        if (connection != null) {
+                            Log.d(LOG_TAG, "BackgroundRestActionButtonHandler=>disconnecting");
+                            connection.disconnect();
+                        }
+                    }                    
+                }else{
+                    Log.d(LOG_TAG, "BackgroundRestActionButtonHandler=>not accept");
                 }
+
             }
             catch(JSONException e) {
                 // nope
@@ -124,7 +132,7 @@ public class BackgroundRestActionButtonHandler extends BroadcastReceiver impleme
                 e.printStackTrace();
             }
 
-            //PushPlugin.sendExtras(originalExtras);
+            PushPlugin.sendExtras(originalExtras);
 
         }
      }
