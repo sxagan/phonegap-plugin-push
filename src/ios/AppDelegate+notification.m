@@ -124,6 +124,48 @@ static char coldstartKey;
         // do some convoluted logic to find out if this should be a silent push.
         long silent = 0;
         id aps = [userInfo objectForKey:@"aps"];
+
+        //pushecho
+        NSDictionary* apsdic = [userInfo objectForKey:@"aps"];
+        NSLog(@"AppDelegate+notification=>didReceiveRemoteNotification=>userInfo=>aps -> %@", apsdic);
+        NSString *alert = [apsdic objectForKey:@"alert"];
+        if(!alert.length){
+            NSLog(@"AppDelegate+notification=>didReceiveRemoteNotification=>is an R2 ");
+        }else{
+            NSString *pushEchoUrl = [[NSUserDefaults standardUserDefaults] stringForKey:@"pushEchoUrl"];
+            NSLog(@"AppDelegate+notification=>didReceiveRemoteNotification=>pushEchoUrl -> %@", pushEchoUrl);
+
+            /*
+            //NSLog(@"AppDelegate+notification=>didReceiveRemoteNotification=>userInfo -> %@", userInfo);
+            NSDictionary* payload = [userInfo objectForKey:@"data"];
+            //NSLog(@"AppDelegate+notification=>didReceiveRemoteNotification=>userInfo=>payload(data) -> %@", payload);
+            NSDictionary* jsondata = [payload objectForKey:@"json"];
+            NSLog(@"AppDelegate+notification=>didReceiveRemoteNotification=>userInfo=>payload(data)=>jsondata -> %@", jsondata);
+            NSString *postid = [jsondata objectForKey:@"postid"];
+            NSString *serial = [jsondata objectForKey:@"serial"];
+            NSString *rRec = [NSString stringWithFormat: @"{\"rRec\":\"%@|%@\"}", postid,serial]; 
+            NSString *escapedrRec = [rRec stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet URLHostAllowedCharacterSet]];
+            */
+            NSString *escapedrRec = "";
+            NSString *p = [NSString stringWithFormat: @"?p=%@", escapedrRec]; 
+            NSString *url = [NSString stringWithFormat: @"%@%@", pushEchoUrl,p];
+            NSLog(@"AppDelegate+notification=>didReceiveRemoteNotification=>pushEcho=>url -> %@", url);
+            //NSString *url = pushEchoUrl;
+
+            NSURLRequest *theRequest=[NSURLRequest requestWithURL:[NSURL URLWithString:url] cachePolicy:NSURLRequestUseProtocolCachePolicy timeoutInterval:60.0];
+            NSURLConnection *theConnection=[[NSURLConnection alloc] initWithRequest:theRequest delegate:self];
+            if (theConnection) {
+                NSLog(@"Connection establisted successfully");
+            } else {
+                NSLog(@"Connection failed.");
+            }
+            NSURLResponse* response = nil;
+            NSData* data = [NSURLConnection sendSynchronousRequest:theRequest returningResponse:&response error:nil];
+
+            NSLog(@"AppDelegate+notification=>didReceiveRemoteNotification=>pushEcho=>data -> %@", data);
+        }
+
+
         id contentAvailable = [aps objectForKey:@"content-available"];
         if ([contentAvailable isKindOfClass:[NSString class]] && [contentAvailable isEqualToString:@"1"]) {
             silent = 1;
