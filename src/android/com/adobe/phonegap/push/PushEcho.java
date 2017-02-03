@@ -53,7 +53,7 @@ public class PushEcho {
         doPushEcho(context, null);
     }
 
-    public static boolean processPushBundle(Context context, Bundle bundle){
+    public static boolean processPushBundle(Context context, Bundle extras){
         String msg = "";
         String data = extras.getString("data");
         JSONObject jsonData = null;
@@ -64,9 +64,9 @@ public class PushEcho {
                 msg = t.getString("msg");
 
                 jsonData = t.getJSONObject("json");
-                Log.d(LOGTAG, "jsonData: " + jsonData.toString(4));
+                Log.d(LOG_TAG, "jsonData: " + jsonData.toString(4));
             } catch (JSONException e) {
-                Log.e(LOGTAG, "Error getting data from payload: " + e.getMessage());
+                Log.e(LOG_TAG, "Error getting data from payload: " + e.getMessage());
                 e.printStackTrace();
             }
         }
@@ -78,9 +78,9 @@ public class PushEcho {
             try {
                 postid = jsonData.getString("postid");
                 serial = jsonData.getInt("serial");
-                Log.d(LOGTAG, "postid: " + postid + ", serial:" + Integer.toString(serial));
+                Log.d(LOG_TAG, "postid: " + postid + ", serial:" + Integer.toString(serial));
             } catch (JSONException e) {
-                Log.e(LOGTAG, "Error getting postid and serial from jsondata: " + e.getMessage());
+                Log.e(LOG_TAG, "Error getting postid and serial from jsondata: " + e.getMessage());
                 e.printStackTrace();
             }
             if(postid != "" && serial != 0){
@@ -88,14 +88,14 @@ public class PushEcho {
                 JSONObject echopayload = new JSONObject();
                 try {
                     echopayload.put("rRec",rRec);
-                    Log.d(LOGTAG, "echopayload: " + echopayload.toString(4));
+                    Log.d(LOG_TAG, "echopayload: " + echopayload.toString(4));
                 } catch (JSONException e) {
-                    Log.e(LOGTAG, "Error forming rRec json: " + e.getMessage());
+                    Log.e(LOG_TAG, "Error forming rRec json: " + e.getMessage());
                     e.printStackTrace();
                 }
                 String echostr = echopayload.toString();
-                Log.d(LOGTAG, "echopayload: " + echostr);
-                retval = doPushEcho(getBaseContext(), echostr);
+                Log.d(LOG_TAG, "echopayload: " + echostr);
+                retval = doPushEcho(context, echostr);
             }
         }
         return retval;
