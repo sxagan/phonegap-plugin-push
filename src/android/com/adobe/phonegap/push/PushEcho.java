@@ -53,6 +53,54 @@ public class PushEcho {
         doPushEcho(context, null);
     }
 
+    public static boolean processPushBundle(Context context, Bundle bundle){
+        String msg = "";
+        String data = extras.getString("data");
+        JSONObject jsonData = null;
+        boolean retval = false;
+        if(data != null){
+            try {
+                JSONObject t = new JSONObject(data);
+                msg = t.getString("msg");
+
+                jsonData = t.getJSONObject("json");
+                Log.d(LOGTAG, "jsonData: " + jsonData.toString(4));
+            } catch (JSONException e) {
+                Log.e(LOGTAG, "Error getting data from payload: " + e.getMessage());
+                e.printStackTrace();
+            }
+        }
+        if(jsonData != null ){
+            String postid = "";
+            int serial = 0;
+            String event = "";
+
+            try {
+                postid = jsonData.getString("postid");
+                serial = jsonData.getInt("serial");
+                Log.d(LOGTAG, "postid: " + postid + ", serial:" + Integer.toString(serial));
+            } catch (JSONException e) {
+                Log.e(LOGTAG, "Error getting postid and serial from jsondata: " + e.getMessage());
+                e.printStackTrace();
+            }
+            if(postid != "" && serial != 0){
+                String rRec = postid + "|" + serial;
+                JSONObject echopayload = new JSONObject();
+                try {
+                    echopayload.put("rRec",rRec);
+                    Log.d(LOGTAG, "echopayload: " + echopayload.toString(4));
+                } catch (JSONException e) {
+                    Log.e(LOGTAG, "Error forming rRec json: " + e.getMessage());
+                    e.printStackTrace();
+                }
+                String echostr = echopayload.toString();
+                Log.d(LOGTAG, "echopayload: " + echostr);
+                retval = doPushEcho(getBaseContext(), echostr);
+            }
+        }
+        return retval;
+    }
+
     public static boolean doPushEcho(Context context, String echopayload){
         //Context context;
         Log.d(LOG_TAG, "doPushEcho=>echopayload: " + (echopayload != null ? echopayload : "No payload given") );

@@ -77,7 +77,8 @@ public class GCMIntentService extends GcmListenerService implements PushConstant
 
             //onMessageReceived - doPushEcho
             Log.d(LOG_TAG, "extras:"+extras);
-            PushEcho.doPushEcho(getBaseContext(), null);
+            PushEcho.processPushBundle(getBaseContext(), extras);
+            //PushEcho.doPushEcho(getBaseContext(), null);
             //Ends onMessageReceived - doPushEcho
 
             // if we are in the foreground and forceShow is `false` only send data
