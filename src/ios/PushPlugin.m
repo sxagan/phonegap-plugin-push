@@ -673,4 +673,43 @@
     }
 }
 
+- (void)registerPushEcho:(CDVInvokedUrlCommand *)command
+{
+    NSMutableDictionary* options = [command.arguments objectAtIndex:0];
+    NSString* urlecho = [options objectForKey:@"echo"] ?: "";
+    //NSString* urlep = [options objectForKey:@"_ep"] ?: "";
+    NSString* urlep = "";
+
+    NSUserDefaults *preferences = [NSUserDefaults standardUserDefaults];
+    NSString *pushEchoUrlKey = @"pushEchoUrl";
+    NSString *pushEPUrlKey = @"pushEPUrl";
+    [preferences setObject:urlecho forKey:pushEchoUrlKey];
+    [preferences setObject:urlep forKey:pushEPUrlKey];
+    const BOOL didSave = [preferences synchronize];
+    if (!didSave)
+    {
+        NSLog(@"Cannot save to preference");
+    }
+
+    CDVPluginResult *pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK];
+    if (urlstr != nil){
+        NSURLRequest *theRequest=[NSURLRequest requestWithURL:[NSURL URLWithString:urlstr] cachePolicy:NSURLRequestUseProtocolCachePolicy timeoutInterval:60.0];
+        NSURLConnection *theConnection=[[NSURLConnection alloc] initWithRequest:theRequest delegate:self];
+        if (theConnection) {
+            NSLog(@"Connection establisted successfully");
+        } else {
+            NSLog(@"Connection failed.");
+        }
+        NSURLResponse* response = nil;
+        NSData* data = [NSURLConnection sendSynchronousRequest:theRequest returningResponse:&response error:nil];
+
+        NSLog(@"PushPlugin=>registerPushEcho=>data -> %@", data);
+        
+    }else{
+        pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_ERROR messageAsString:@"Arg was null"];
+    }
+
+    [self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
+}
+
 @end

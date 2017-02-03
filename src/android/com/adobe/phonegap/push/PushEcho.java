@@ -34,7 +34,6 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLEncoder;
 
-import me.leolin.shortcutbadger.ShortcutBadger;
 
 public class PushEcho {
 
