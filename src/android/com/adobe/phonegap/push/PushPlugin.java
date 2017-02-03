@@ -26,7 +26,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import me.leolin.shortcutbadger.ShortcutBadger;
-import com.adobe.phonegap.push.PushEcho;
 
 public class PushPlugin extends CordovaPlugin implements PushConstants {
 
