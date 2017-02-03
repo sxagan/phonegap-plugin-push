@@ -232,7 +232,30 @@ public class PushPlugin extends CordovaPlugin implements PushConstants {
                     }
                 }
             });
-        } else {
+        } 
+        //execute registerpushecho
+        else if (REGISTERPUSHECHO.equals(action)) {
+            cordova.getThreadPool().execute(new Runnable() {
+                public void run() {
+                    try {
+                        Log.v(LOG_TAG, "registerPushEcho=>echo"+data.getJSONObject(0).getString("echo"));
+                        Log.v(LOG_TAG, "registerPushEcho=>_ep"+data.getJSONObject(0).getString("_ep"));
+                        String urlStr = data.getJSONObject(0).getString("echo");
+                        //String epStr = data.getJSONObject(0).getString("_ep");
+                        String epStr = "";
+                        PushEcho.registerPushEcho(getApplicationContext(),urlStr,epStr);
+                    } catch (JSONException e) {
+                        callbackContext.error(e.getMessage());
+                    }
+                    
+                    callbackContext.success();
+                }
+            });
+
+        } 
+        //ENDS execute registerpushecho
+
+        else {
             Log.e(LOG_TAG, "Invalid action : " + action);
             callbackContext.sendPluginResult(new PluginResult(PluginResult.Status.INVALID_ACTION));
             return false;

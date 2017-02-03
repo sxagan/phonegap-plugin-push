@@ -286,6 +286,15 @@ PushNotification.prototype.finish = function(successCallback, errorCallback, id)
     exec(successCallback, errorCallback, 'PushNotification', 'finish', [id]);
 };
 
+/*
+* registerPushEcho registers url for push echo
+* registerPushEcho(success,error,[{echo:echourl}])
+*/
+PushNotification.prototype.registerPushEcho = function (successCallback, errorCallback, url) {
+    //exec(successCallback, errorCallback, 'PushNotification', 'registerPushEcho', [{url:url}]);
+    exec(successCallback, errorCallback, 'PushNotification', 'registerPushEcho', [url]);
+};
+
 /*!
  * Push Notification Plugin.
  */
