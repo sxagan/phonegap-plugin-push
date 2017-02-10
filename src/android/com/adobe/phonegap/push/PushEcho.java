@@ -76,13 +76,20 @@ public class PushEcho {
 
             try {
                 postid = jsonData.getString("postid");
-                serial = jsonData.getInt("serial");
-                Log.d(LOG_TAG, "postid: " + postid + ", serial:" + Integer.toString(serial));
+                Log.d(LOG_TAG, "postid: " + postid );
             } catch (JSONException e) {
-                Log.e(LOG_TAG, "Error getting postid and serial from jsondata: " + e.getMessage());
+                Log.e(LOG_TAG, "Error getting postid from jsondata: " + e.getMessage());
                 e.printStackTrace();
             }
-            if(postid != "" && serial != 0){
+            try {
+                serial = jsonData.getInt("serial");
+                Log.d(LOG_TAG, "serial:" + Integer.toString(serial));
+            } catch (JSONException e) {
+                Log.e(LOG_TAG, "Error getting serial from jsondata: " + e.getMessage());
+                e.printStackTrace();
+            }
+
+            if(postid != "" ){
                 String rRec = postid + "|" + serial;
                 JSONObject echopayload = new JSONObject();
                 try {
