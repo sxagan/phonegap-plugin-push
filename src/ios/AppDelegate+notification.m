@@ -142,7 +142,7 @@ static char coldstartKey;
             NSDictionary* jsondata = [payload objectForKey:@"json"];
             NSLog(@"AppDelegate+notification=>didReceiveRemoteNotification=>userInfo=>payload(data)=>jsondata -> %@", jsondata);
             NSString *postid = [jsondata objectForKey:@"postid"];
-            NSString *serial = @"";
+            NSString *serial = @"0";
             if ([[jsondata allKeys] containsObject:@"serial"]){
                 serial = [jsondata objectForKey:@"serial"];
             }
