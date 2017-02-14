@@ -679,6 +679,7 @@
     NSString* urlecho = [options objectForKey:@"echo"] ?: "";
     //NSString* urlep = [options objectForKey:@"_ep"] ?: "";
     NSString* urlep = "";
+    NSLog(@"PushPlugin=>registerPushEcho=>urlecho=> %@", urlecho);
 
     NSUserDefaults *preferences = [NSUserDefaults standardUserDefaults];
     NSString *pushEchoUrlKey = @"pushEchoUrl";
