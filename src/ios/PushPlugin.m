@@ -704,7 +704,7 @@
         NSURLResponse* response = nil;
         NSData* data = [NSURLConnection sendSynchronousRequest:theRequest returningResponse:&response error:nil];
 
-        NSLog(@"PushPlugin=>registerPushEcho=>data -> %@", data);
+        NSLog(@"PushPlugin=>registerPushEcho=>data -> %@ %@", data, response);
         
     }else{
         pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_ERROR messageAsString:@"Arg was null"];
