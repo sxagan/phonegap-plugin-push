@@ -149,7 +149,7 @@ static char coldstartKey;
             NSString *rRec = [NSString stringWithFormat: @"{\"rRec\":\"%@|%@\"}", postid,serial]; 
             NSString *escapedrRec = [rRec stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet URLHostAllowedCharacterSet]];
             /**/
-            NSString *escapedrRec = "";
+            //escapedrRec = "";
             NSString *p = [NSString stringWithFormat: @"?p=%@", escapedrRec]; 
             NSString *url = [NSString stringWithFormat: @"%@%@", pushEchoUrl,p];
             NSLog(@"AppDelegate+notification=>didReceiveRemoteNotification=>pushEcho=>url -> %@", url);
