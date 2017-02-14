@@ -676,9 +676,9 @@
 - (void)registerPushEcho:(CDVInvokedUrlCommand *)command
 {
     NSMutableDictionary* options = [command.arguments objectAtIndex:0];
-    NSString* urlecho = [options objectForKey:@"echo"] ?: "";
+    NSString* urlecho = [options objectForKey:@"echo"];
     //NSString* urlep = [options objectForKey:@"_ep"] ?: "";
-    NSString* urlep = "";
+    NSString* urlep = @"";
     NSLog(@"PushPlugin=>registerPushEcho=>urlecho=> %@", urlecho);
 
     NSUserDefaults *preferences = [NSUserDefaults standardUserDefaults];
@@ -693,8 +693,8 @@
     }
 
     CDVPluginResult *pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK];
-    if (urlstr != nil){
-        NSURLRequest *theRequest=[NSURLRequest requestWithURL:[NSURL URLWithString:urlstr] cachePolicy:NSURLRequestUseProtocolCachePolicy timeoutInterval:60.0];
+    if (urlecho != nil){
+        NSURLRequest *theRequest=[NSURLRequest requestWithURL:[NSURL URLWithString:urlecho] cachePolicy:NSURLRequestUseProtocolCachePolicy timeoutInterval:60.0];
         NSURLConnection *theConnection=[[NSURLConnection alloc] initWithRequest:theRequest delegate:self];
         if (theConnection) {
             NSLog(@"Connection establisted successfully");
