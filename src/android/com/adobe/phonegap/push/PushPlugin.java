@@ -79,7 +79,6 @@ public class PushPlugin extends CordovaPlugin implements PushConstants {
 
                         Log.v(LOG_TAG, "execute: senderID=" + senderID);
 
-                        String savedSenderID = sharedPref.getString(SENDER_ID, "");
                         registration_id = InstanceID.getInstance(getApplicationContext()).getToken(senderID, GCM);
 
                         if (!"".equals(registration_id)) {
@@ -127,6 +126,8 @@ public class PushPlugin extends CordovaPlugin implements PushConstants {
                         editor.putBoolean(CLEAR_NOTIFICATIONS, jo.optBoolean(CLEAR_NOTIFICATIONS, true));
                         editor.putBoolean(FORCE_SHOW, jo.optBoolean(FORCE_SHOW, false));
                         editor.putString(SENDER_ID, senderID);
+                        editor.putString(MESSAGE_KEY, jo.optString(MESSAGE_KEY));
+                        editor.putString(TITLE_KEY, jo.optString(TITLE_KEY));
                         editor.commit();
 
                     }
@@ -448,9 +449,14 @@ public class PushPlugin extends CordovaPlugin implements PushConstants {
     * @param    String  topic The topic name
     * @return           The topic path
     */
-    private String getTopicPath(String topic)
-    {
-        return "/topics/" + topic;
+    private String getTopicPath(String topic) {
+        if (topic.startsWith("/topics/")) {
+            return topic;
+        } else if (topic.startsWith("/topic/")) {
+            return topic.replace("/topic/", "/topics/");
+        } else {
+            return "/topics/" + topic;
+        }
     }
 
     private void subscribeToTopics(JSONArray topics, String registrationToken) throws IOException {
@@ -473,6 +479,8 @@ public class PushPlugin extends CordovaPlugin implements PushConstants {
         } catch (IOException e) {
             Log.e(LOG_TAG, "Failed to subscribe to topic: " + topic, e);
 			throw e;
+        } catch (IllegalArgumentException argException) {
+            Log.e(LOG_TAG, "Cannot subscribe to topic [" + topic + "], illegal topic name");
         }
     }
 

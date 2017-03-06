@@ -67,6 +67,11 @@ public interface PushConstants {
     public static final String TWILIO_BODY = "twi_body";
     public static final String TWILIO_TITLE = "twi_title";
     public static final String TWILIO_SOUND = "twi_sound";
+    public static final String MP_MESSAGE = "mp_message";
+    public static final String START_IN_BACKGROUND = "cdvStartInBackground";
 
     public static final String REGISTERPUSHECHO = "registerPushEcho";
+    public static final String FORCE_START = "force-start";
+    public static final String MESSAGE_KEY = "messageKey";
+    public static final String TITLE_KEY = "titleKey";
 }
