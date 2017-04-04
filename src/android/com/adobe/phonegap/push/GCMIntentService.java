@@ -42,11 +42,17 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Random;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.TimeZone;
+import android.app.AlarmManager;
 
 @SuppressLint("NewApi")
 public class GCMIntentService extends GcmListenerService implements PushConstants {
 
     private static final String LOG_TAG = "PushPlugin_GCMIntentService";
+    private static final String SCHEDULE_LOG_TAG = "Schedule_notification";
+
     private static HashMap<Integer, ArrayList<String>> messageMap = new HashMap<Integer, ArrayList<String>>();
 
     public void setNotification(int notId, String message){
@@ -312,6 +318,7 @@ public class GCMIntentService extends GcmListenerService implements PushConstant
                 extras.putString(TITLE, getAppName(this));
             }
 
+            checkIfNotificationNeedsScheduling(context, extras);
             createNotification(context, extras);
         }
 
@@ -327,6 +334,55 @@ public class GCMIntentService extends GcmListenerService implements PushConstant
             Log.d(LOG_TAG, "app is not running and content available true");
             Log.d(LOG_TAG, "send notification event");
             PushPlugin.sendExtras(extras);
+        }
+    }
+
+    public void checkIfNotificationNeedsScheduling(Context context, Bundle extras) {
+        Log.d(SCHEDULE_LOG_TAG, "checkIfNotificationNeedsScheduling called");
+
+        String data = extras.getString("data");
+        String title = extras.getString(TITLE);
+        JSONObject jsonData = null;
+
+        Log.d(SCHEDULE_LOG_TAG, "data:" + data);
+
+        if(data != null){
+            try {
+                JSONObject t = new JSONObject(data);
+                jsonData = t.getJSONObject("json");
+                Log.d(SCHEDULE_LOG_TAG, "jsonData: " + jsonData.toString(4));
+            } catch (JSONException e) {
+                Log.e(SCHEDULE_LOG_TAG, "Error getting data from payload: " + e.getMessage());
+                e.printStackTrace();
+            }
+        }
+
+        if(jsonData != null ){
+            try {
+                JSONObject rawData = jsonData.getJSONObject("rawJson");
+
+                try {
+                    if(rawData.getString("schedule") != null) {
+                        extras.putString(REMINDER_TITLE, "Schedule reminder for " + title);
+                        extras.putString(TIME, rawData.getString("schedule"));
+                    }
+                } catch (JSONException e) {
+                    Log.d(SCHEDULE_LOG_TAG, e.toString());
+                }
+
+                try {
+                    if(rawData.getString("duetimestamp") != null) {
+                        extras.putString(REMINDER_TITLE, "Due date reminder for " + title);
+                        extras.putString(TIME, rawData.getString("duetimestamp"));
+                    }
+                } catch (JSONException e) {
+                    Log.d(SCHEDULE_LOG_TAG, e.toString());
+                }
+
+            } catch (JSONException e) {
+                Log.d(SCHEDULE_LOG_TAG, e.toString());
+                // do nothing
+            }
         }
     }
 
@@ -451,6 +507,45 @@ public class GCMIntentService extends GcmListenerService implements PushConstant
         createActions(extras, mBuilder, resources, packageName, notId);
 
         mNotificationManager.notify(appName, notId, mBuilder.build());
+
+        Long scheduleTime = System.currentTimeMillis();
+
+        if(extras.getString(TIME) != null) {
+            NotificationCompat.Builder mBuilder2 = mBuilder;
+            mBuilder2.setContentTitle(fromHtml(extras.getString(REMINDER_TITLE)));
+            Notification notification = mBuilder2.build();
+
+            Log.d(LOG_TAG, "Found a time to trigger later: " + extras.getString(TIME));
+            try {
+                String iso8601Date = extras.getString(TIME);
+                SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
+                formatter.setTimeZone(TimeZone.getTimeZone("UTC"));
+                Date parsedDate = formatter.parse(iso8601Date);
+                scheduleTime = parsedDate.getTime();
+                Log.d(LOG_TAG, "NEW TIME HAS BEEN SET");
+
+                Intent notificationIntent2 = new Intent(context, MyNotificationPublisher.class);
+                notificationIntent2.putExtra("notification_id", 1);
+                notificationIntent2.putExtra("notification", notification);
+                // notificationIntent2.putExtra("app_name", appName);
+
+                int requestCode2 = new Random().nextInt();
+
+                PendingIntent pendingIntent2 = PendingIntent.getBroadcast(context, requestCode2, notificationIntent2, PendingIntent.FLAG_CANCEL_CURRENT);
+
+                Log.d(LOG_TAG, "TIME TO TRIGGER: " + String.valueOf(scheduleTime));
+                // long futureInMillis = SystemClock.elapsedRealtime() + delay;
+                AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
+                alarmManager.set(AlarmManager.RTC_WAKEUP, scheduleTime, pendingIntent2);
+                Log.d(LOG_TAG, "alarmManager has set");
+            } catch (Exception e) {
+                // do nothing
+                Log.d(LOG_TAG, "ERROR hit parsing date: " + e.toString());
+            }
+            
+        } else {
+            Log.d(LOG_TAG, "Using Current time to trigger notification");
+        }
     }
 
     private void updateIntent(Intent intent, String callback, Bundle extras, boolean foreground, int notId) {
