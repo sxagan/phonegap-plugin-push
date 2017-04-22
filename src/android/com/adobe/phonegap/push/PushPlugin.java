@@ -442,7 +442,53 @@ public class PushPlugin extends CordovaPlugin implements PushConstants {
                     }
                 }
             });
-        } else {
+        } else if(CLEARREMINDERS.equals(action)) {
+            cordova.getThreadPool().execute(new Runnable() {
+                public void run() {
+                    Log.v(LOG_TAG, "clearReminders: data=" + data.toString());
+
+                    SharedPreferences prefs = getApplicationContext().getSharedPreferences(REMINDERS_LIST, Context.MODE_PRIVATE);
+
+                    if(prefs != null) {
+                    
+                        Map<String, ?> allEntries = prefs.getAll();
+                        for (Map.Entry<String, ?> entry : allEntries.entrySet()) {
+
+                            Log.d("REMINDERS_LIST map values", entry.getKey() + ": " + entry.getValue().toString());
+
+                            // Added the cancel of intent here
+                            int reminder_id = Integer.parseInt(entry.getValue().toString());
+
+                            Intent notificationIntent2 = new Intent(getApplicationContext(), MyNotificationPublisher.class);
+                            notificationIntent2.putExtra("notification_id", reminder_id);
+
+                            PendingIntent pendingIntent2 = PendingIntent.getBroadcast(getApplicationContext(), reminder_id, notificationIntent2, 0);
+
+                            pendingIntent2.cancel();
+
+                            AlarmManager alarmManager = (AlarmManager) getApplicationContext().getSystemService(Context.ALARM_SERVICE);
+                            alarmManager.cancel(pendingIntent2);
+                        }
+
+                        SharedPreferences.Editor editor = prefs.edit();
+                        editor.clear();
+                        editor.commit();
+
+                    }
+
+                    SharedPreferences timePrefs = getApplicationContext().getSharedPreferences(PushPlugin.REMINDERS_TIMES, Context.MODE_PRIVATE);
+                    if(timePrefs != null) {
+                        SharedPreferences.Editor timeEditor = timePrefs.edit();
+                        timeEditor.clear();
+                        timeEditor.commit();
+                    }
+
+                    callbackContext.success();
+
+                }
+            });
+        }
+        else {
             Log.e(LOG_TAG, "Invalid action : " + action);
             callbackContext.sendPluginResult(new PluginResult(PluginResult.Status.INVALID_ACTION));
             return false;

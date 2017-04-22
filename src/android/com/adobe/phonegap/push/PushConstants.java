@@ -71,6 +71,7 @@ public interface PushConstants {
     public static final String SCHEDULEREMINDER = "scheduleReminder";
     public static final String DELETEREMINDER = "deleteReminder";
     public static final String VIEWREMINDERS = "viewReminders";
+    public static final String CLEARREMINDERS = "clearReminders";
     public static final String MP_MESSAGE = "mp_message";
     public static final String START_IN_BACKGROUND = "cdvStartInBackground";
     public static final String FORCE_START = "force-start";
