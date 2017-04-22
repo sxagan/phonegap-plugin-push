@@ -349,8 +349,11 @@ module.exports = {
         exec(successCallback, errorCallback, 'PushNotification', 'deleteReminder', [{
             itemId: itemId
         }]);
-    }
-    ,
+    },
+    viewReminders: function(successCallback, errorCallback, itemId) {
+        //exec(successCallback, errorCallback, 'PushNotification', 'registerPushEcho', [{url:url}]);
+        exec(successCallback, errorCallback, 'PushNotification', 'viewReminders', []);
+    },
 
     /**
      * PushNotification Object.

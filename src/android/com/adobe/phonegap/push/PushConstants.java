@@ -70,6 +70,7 @@ public interface PushConstants {
     public static final String REGISTERPUSHECHO = "registerPushEcho";
     public static final String SCHEDULEREMINDER = "scheduleReminder";
     public static final String DELETEREMINDER = "deleteReminder";
+    public static final String VIEWREMINDERS = "viewReminders";
     public static final String MP_MESSAGE = "mp_message";
     public static final String START_IN_BACKGROUND = "cdvStartInBackground";
     public static final String FORCE_START = "force-start";
@@ -83,5 +84,6 @@ public interface PushConstants {
     public static final String TIME = "schedule_time";
     public static final String REMINDER_TITLE = "reminder_title";
     public static final String REMINDERS_LIST = "reminders_list";
+    public static final String REMINDERS_TIMES = "reminders_times";
     public static final String ITEM_ID = "item_id";
 }

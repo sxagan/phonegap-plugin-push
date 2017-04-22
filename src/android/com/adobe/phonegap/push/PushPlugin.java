@@ -243,9 +243,7 @@ public class PushPlugin extends CordovaPlugin implements PushConstants {
                     }
                 }
             });
-        } 
-        //execute registerpushecho
-        else if (REGISTERPUSHECHO.equals(action)) {
+        } else if (REGISTERPUSHECHO.equals(action)) {
             cordova.getThreadPool().execute(new Runnable() {
                 public void run() {
                     try {
@@ -263,10 +261,7 @@ public class PushPlugin extends CordovaPlugin implements PushConstants {
                 }
             });
 
-        }
-        //ENDS execute registerpushecho
-
-        else if(DELETEREMINDER.equals(action)) {
+        } else if(DELETEREMINDER.equals(action)) {
             cordova.getThreadPool().execute(new Runnable() {
                 public void run() {
                     Log.v(LOG_TAG, "deleteReminder: data=" + data.toString());
@@ -275,6 +270,8 @@ public class PushPlugin extends CordovaPlugin implements PushConstants {
                         String itemId = data.getJSONObject(0).getString("itemId");
 
                         SharedPreferences prefs = getApplicationContext().getSharedPreferences(REMINDERS_LIST, Context.MODE_PRIVATE);
+
+                        String keyToRemove = "";
 
                         if(prefs != null) {
 
@@ -285,7 +282,16 @@ public class PushPlugin extends CordovaPlugin implements PushConstants {
                                 Log.d("map values", entry.getKey() + ": " + entry.getValue().toString());
                                 if(entry.getKey().toString().equals(itemId)) {
                                     appNotificationId = entry.getValue().toString();
+                                    keyToRemove = entry.getKey().toString();
                                 }
+                            }
+
+                            Log.d("REMOVING from reminder_list", keyToRemove);
+
+                            if(!keyToRemove.equals("")) {
+                                SharedPreferences.Editor editor = prefs.edit();
+                                editor.remove(keyToRemove);
+                                editor.commit();
                             }
 
                             // Added the cancel of intent here
@@ -302,6 +308,15 @@ public class PushPlugin extends CordovaPlugin implements PushConstants {
                             alarmManager.cancel(pendingIntent2);
 
                         }
+
+                        SharedPreferences timePrefs = getApplicationContext().getSharedPreferences(PushPlugin.REMINDERS_TIMES, Context.MODE_PRIVATE);
+                        if(timePrefs != null) {
+                            if(!keyToRemove.equals("")) {
+                                SharedPreferences.Editor editor = timePrefs.edit();
+                                editor.remove(keyToRemove);
+                                editor.commit();
+                            }
+                        }
                         
                     } catch (JSONException e) {
                         callbackContext.error(e.getMessage());
@@ -311,9 +326,7 @@ public class PushPlugin extends CordovaPlugin implements PushConstants {
 
                 }
             });
-        }
-
-        else if(SCHEDULEREMINDER.equals(action)) {
+        } else if(SCHEDULEREMINDER.equals(action)) {
             cordova.getThreadPool().execute(new Runnable() {
                 public void run() {
                     Log.v(LOG_TAG, "scheduleReminder: data=" + data.toString());
@@ -375,6 +388,11 @@ public class PushPlugin extends CordovaPlugin implements PushConstants {
                                 editor.putInt(itemId, notID);
                                 editor.commit();
 
+                                SharedPreferences timePrefs = getApplicationContext().getSharedPreferences(PushPlugin.REMINDERS_TIMES, Context.MODE_PRIVATE);
+                                SharedPreferences.Editor timeEditor = timePrefs.edit();
+                                timeEditor.putLong(itemId, scheduleTime);
+                                timeEditor.commit();
+
                             } catch (Exception e) {
                                 // do nothing
                                 Log.d(LOG_TAG, "ERROR hit parsing date: " + e.toString());
@@ -388,9 +406,43 @@ public class PushPlugin extends CordovaPlugin implements PushConstants {
                     callbackContext.success();
                 }
             });
-        }
+        } else if(VIEWREMINDERS.equals(action)) {
+            cordova.getThreadPool().execute(new Runnable() {
+                public void run() {
+                    Log.v(LOG_TAG, "viewReminders called");
 
-        else {
+                    SharedPreferences prefsList = getApplicationContext().getSharedPreferences(REMINDERS_LIST, Context.MODE_PRIVATE);
+                    if(prefsList != null) {
+                        Map<String, ?> allEntries = prefsList.getAll();
+                        for (Map.Entry<String, ?> entry : allEntries.entrySet()) {
+                            Log.d("REMINDERS_LIST map values", entry.getKey() + ": " + entry.getValue().toString());
+                            // jo.put(entry.getKey(), entry.getValue().toString());
+                        }
+                    }
+
+
+                    SharedPreferences prefs = getApplicationContext().getSharedPreferences(REMINDERS_TIMES, Context.MODE_PRIVATE);
+                    JSONObject jo = new JSONObject();
+                    try {
+                        if(prefs != null) {
+                            Map<String, ?> allEntries = prefs.getAll();
+                            for (Map.Entry<String, ?> entry : allEntries.entrySet()) {
+                                Log.d("REMINDERS_TIMES map values", entry.getKey() + ": " + entry.getValue().toString());
+                                jo.put(entry.getKey(), entry.getValue().toString());
+                            }
+                        }
+
+                        PluginResult pluginResult = new PluginResult(PluginResult.Status.OK, jo);
+                        pluginResult.setKeepCallback(true);
+                        callbackContext.sendPluginResult(pluginResult);
+                    } catch (UnknownError e) {
+                        callbackContext.error(e.getMessage());
+                    } catch (JSONException e) {
+                        callbackContext.error(e.getMessage());
+                    }
+                }
+            });
+        } else {
             Log.e(LOG_TAG, "Invalid action : " + action);
             callbackContext.sendPluginResult(new PluginResult(PluginResult.Status.INVALID_ACTION));
             return false;

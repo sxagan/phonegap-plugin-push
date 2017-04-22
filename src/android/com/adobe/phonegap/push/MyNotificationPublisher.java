@@ -32,24 +32,35 @@ public class MyNotificationPublisher extends BroadcastReceiver {
         Log.d(LOG_TAG, "Notification ID: "  + String.valueOf(notificationId));
         notificationManager.notify(appName, notificationId, notification);
 
+        String keyToRemove = "";
+
         SharedPreferences prefs = context.getSharedPreferences(PushPlugin.REMINDERS_LIST, Context.MODE_PRIVATE);
 
         if(prefs != null) {
-
-            String keyToRemove = "";
         
             Map<String, ?> allEntries = prefs.getAll();
             for (Map.Entry<String, ?> entry : allEntries.entrySet()) {
-                Log.d("map values", entry.getKey() + ": " + entry.getValue().toString());
+                Log.d("post map values", entry.getKey() + ": " + entry.getValue().toString());
                 if(entry.getValue().toString().equals(String.valueOf(notificationId))) {
                     keyToRemove = entry.getKey().toString();
                 }
             }
 
-            Log.d("REMOVING", keyToRemove);
+            Log.d("REMOVING from reminder_list", keyToRemove);
 
             if(!keyToRemove.equals("")) {
                 SharedPreferences.Editor editor = prefs.edit();
+                editor.remove(keyToRemove);
+                editor.commit();
+            }
+
+        }
+
+        SharedPreferences timePrefs = context.getSharedPreferences(PushPlugin.REMINDERS_TIMES, Context.MODE_PRIVATE);
+        if(timePrefs != null) {
+
+            if(!keyToRemove.equals("")) {
+                SharedPreferences.Editor editor = timePrefs.edit();
                 editor.remove(keyToRemove);
                 editor.commit();
             }

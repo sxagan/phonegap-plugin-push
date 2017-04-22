@@ -557,6 +557,11 @@ public class GCMIntentService extends GcmListenerService implements PushConstant
                 editor.putInt(extras.getString(ITEM_ID), reminder_id);
                 editor.commit();
 
+                SharedPreferences timePrefs = context.getSharedPreferences(PushPlugin.REMINDERS_TIMES, Context.MODE_PRIVATE);
+                SharedPreferences.Editor timeEditor = timePrefs.edit();
+                timeEditor.putLong(extras.getString(ITEM_ID), scheduleTime);
+                timeEditor.commit();
+
             } catch (Exception e) {
                 // do nothing
                 Log.d(LOG_TAG, "ERROR hit parsing date: " + e.toString());
