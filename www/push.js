@@ -300,6 +300,19 @@ PushNotification.prototype.registerPushEcho = function (successCallback, errorCa
     exec(successCallback, errorCallback, 'PushNotification', 'registerPushEcho', [url]);
 };
 
+/*
+* scheduleReminder schedules a reminder for the app
+* scheduleReminder(success,error,[{itemId: itemId, msg: msg, timestamp: timestamp}])
+*/
+/*PushNotification.prototype.scheduleReminder = function(successCallback, errorCallback, itemId, msg, timestamp) {
+    //exec(successCallback, errorCallback, 'PushNotification', 'registerPushEcho', [{url:url}]);
+    exec(successCallback, errorCallback, 'PushNotification', 'scheduleReminder', [{
+        itemId: itemId,
+        msg: msg,
+        timestamp: timestamp
+    }]);
+};*/
+
 /*!
  * Push Notification Plugin.
  */
@@ -322,6 +335,22 @@ module.exports = {
     hasPermission: function(successCallback, errorCallback) {
         exec(successCallback, errorCallback, 'PushNotification', 'hasPermission', []);
     },
+
+    scheduleReminder: function(successCallback, errorCallback, itemId, msg, timestamp) {
+        //exec(successCallback, errorCallback, 'PushNotification', 'registerPushEcho', [{url:url}]);
+        exec(successCallback, errorCallback, 'PushNotification', 'scheduleReminder', [{
+            itemId: itemId,
+            msg: msg,
+            timestamp: timestamp
+        }]);
+    },
+    deleteReminder: function(successCallback, errorCallback, itemId) {
+        //exec(successCallback, errorCallback, 'PushNotification', 'registerPushEcho', [{url:url}]);
+        exec(successCallback, errorCallback, 'PushNotification', 'deleteReminder', [{
+            itemId: itemId
+        }]);
+    }
+    ,
 
     /**
      * PushNotification Object.

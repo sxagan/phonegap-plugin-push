@@ -24,6 +24,10 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import android.app.AlarmManager;
+import android.content.Intent;
+import android.app.PendingIntent;
 
 import me.leolin.shortcutbadger.ShortcutBadger;
 
@@ -253,8 +257,83 @@ public class PushPlugin extends CordovaPlugin implements PushConstants {
                 }
             });
 
-        } 
+        }
         //ENDS execute registerpushecho
+
+        else if(DELETEREMINDER.equals(action)) {
+            cordova.getThreadPool().execute(new Runnable() {
+                public void run() {
+                    Log.v(LOG_TAG, "deleteReminder: data=" + data.toString());
+
+                    try {
+                        String itemId = data.getJSONObject(0).getString("itemId");
+
+                        SharedPreferences prefs = getApplicationContext().getSharedPreferences(REMINDERS_LIST, Context.MODE_PRIVATE);
+
+                        if(prefs != null) {
+
+                            String appNotificationId = "";
+                        
+                            Map<String, ?> allEntries = prefs.getAll();
+                            for (Map.Entry<String, ?> entry : allEntries.entrySet()) {
+                                Log.d("map values", entry.getKey() + ": " + entry.getValue().toString());
+                                if(entry.getKey().toString().equals(itemId)) {
+                                    appNotificationId = entry.getValue().toString();
+                                }
+                            }
+
+
+                            // Added the cancel of intent here
+                            int reminder_id = Integer.parseInt(appNotificationId);
+
+                            Intent notificationIntent2 = new Intent(getApplicationContext(), MyNotificationPublisher.class);
+                            notificationIntent2.putExtra("notification_id", reminder_id);
+
+                            PendingIntent pendingIntent2 = PendingIntent.getBroadcast(getApplicationContext(), reminder_id, notificationIntent2, 0);
+
+                            pendingIntent2.cancel();
+
+                            AlarmManager alarmManager = (AlarmManager) getApplicationContext().getSystemService(Context.ALARM_SERVICE);
+                            alarmManager.cancel(pendingIntent2);
+
+                        }
+                        
+                    } catch (JSONException e) {
+                        callbackContext.error(e.getMessage());
+                    }
+
+                    callbackContext.success();
+
+                }
+            });
+        }
+
+        else if(SCHEDULEREMINDER.equals(action)) {
+            cordova.getThreadPool().execute(new Runnable() {
+                public void run() {
+                    Log.v(LOG_TAG, "scheduleReminder: data=" + data.toString());
+                    try {
+                        String msg = data.getJSONObject(0).getString("msg");
+                        Long timestamp = Long.valueOf(data.getJSONObject(0).getInt("timestamp"));
+                        String itemId = data.getJSONObject(0).getString("itemId");
+
+                        SharedPreferences prefs = getApplicationContext().getSharedPreferences(REMINDERS_LIST, Context.MODE_PRIVATE);
+
+                        if(prefs != null) {
+                            Map<String, ?> allEntries = prefs.getAll();
+                            for (Map.Entry<String, ?> entry : allEntries.entrySet()) {
+                                Log.d("map values", entry.getKey() + ": " + entry.getValue().toString());
+                            }
+                        }
+
+                    } catch (JSONException e) {
+                        callbackContext.error(e.getMessage());
+                    }
+                }
+
+                callbackContext.success();
+            });
+        }
 
         else {
             Log.e(LOG_TAG, "Invalid action : " + action);

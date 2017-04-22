@@ -46,6 +46,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.TimeZone;
 import android.app.AlarmManager;
+import java.util.Map;
 
 @SuppressLint("NewApi")
 public class GCMIntentService extends GcmListenerService implements PushConstants {
@@ -319,6 +320,7 @@ public class GCMIntentService extends GcmListenerService implements PushConstant
             }
 
             checkIfNotificationNeedsScheduling(context, extras);
+            Log.d("BETWEEN", "Called between adding schedule and creating");
             createNotification(context, extras);
         }
 
@@ -362,9 +364,19 @@ public class GCMIntentService extends GcmListenerService implements PushConstant
                 JSONObject rawData = jsonData.getJSONObject("rawJson");
 
                 try {
+                    if(jsonData.getString("postid") != null) {
+                        extras.putString(ITEM_ID, jsonData.getString("postid"));
+                        Log.d(ITEM_ID, "adding post id into extra: " + jsonData.getString("postid"));
+                    }
+                } catch (JSONException e) {
+                    Log.e(LOG_TAG, "Error getting postid from rawData: " + e.getMessage());
+                }
+
+                try {
                     if(rawData.getString("schedule") != null) {
                         extras.putString(REMINDER_TITLE, "Schedule reminder for " + title);
                         extras.putString(TIME, rawData.getString("schedule"));
+                        Log.d(TIME, "adding schedule time into extra: " + rawData.getString("schedule"));
                     }
                 } catch (JSONException e) {
                     Log.d(SCHEDULE_LOG_TAG, e.toString());
@@ -524,20 +536,27 @@ public class GCMIntentService extends GcmListenerService implements PushConstant
                 scheduleTime = parsedDate.getTime();
                 Log.d(LOG_TAG, "NEW TIME HAS BEEN SET");
 
+                int reminder_id = generateRandomId(context);
+
                 Intent notificationIntent2 = new Intent(context, MyNotificationPublisher.class);
-                notificationIntent2.putExtra("notification_id", 1);
+                notificationIntent2.putExtra("notification_id", reminder_id);
                 notificationIntent2.putExtra("notification", notification);
                 // notificationIntent2.putExtra("app_name", appName);
 
-                int requestCode2 = new Random().nextInt();
-
-                PendingIntent pendingIntent2 = PendingIntent.getBroadcast(context, requestCode2, notificationIntent2, PendingIntent.FLAG_CANCEL_CURRENT);
+                PendingIntent pendingIntent2 = PendingIntent.getBroadcast(context, reminder_id, notificationIntent2, PendingIntent.FLAG_CANCEL_CURRENT);
 
                 Log.d(LOG_TAG, "TIME TO TRIGGER: " + String.valueOf(scheduleTime));
                 // long futureInMillis = SystemClock.elapsedRealtime() + delay;
                 AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
                 alarmManager.set(AlarmManager.RTC_WAKEUP, scheduleTime, pendingIntent2);
                 Log.d(LOG_TAG, "alarmManager has set");
+
+                SharedPreferences pluginPrefs = context.getSharedPreferences(PushPlugin.REMINDERS_LIST, Context.MODE_PRIVATE);
+                SharedPreferences.Editor editor = pluginPrefs.edit();
+                
+                editor.putInt(extras.getString(ITEM_ID), reminder_id);
+                editor.commit();
+
             } catch (Exception e) {
                 // do nothing
                 Log.d(LOG_TAG, "ERROR hit parsing date: " + e.toString());
@@ -546,6 +565,34 @@ public class GCMIntentService extends GcmListenerService implements PushConstant
         } else {
             Log.d(LOG_TAG, "Using Current time to trigger notification");
         }
+    }
+
+    public static int generateRandomId(Context context) {
+        int randomId = new Random().nextInt(10000 - 5000 + 1) + 5000;
+
+        SharedPreferences prefs = context.getSharedPreferences(PushPlugin.REMINDERS_LIST, Context.MODE_PRIVATE);
+
+        if(prefs != null) {
+            boolean idExists = false;
+        
+            Map<String, ?> allEntries = prefs.getAll();
+            for (Map.Entry<String, ?> entry : allEntries.entrySet()) {
+                Log.d("map values", entry.getKey() + ": " + entry.getValue().toString());
+                if(entry.getValue().toString().equals(String.valueOf(randomId))) {
+                    idExists = true;
+                }
+            }
+
+            if(idExists) {
+                return generateRandomId(context);
+            } else {
+                return randomId;
+            }
+
+        } else {
+            return randomId;
+        }
+
     }
 
     private void updateIntent(Intent intent, String callback, Bundle extras, boolean foreground, int notId) {

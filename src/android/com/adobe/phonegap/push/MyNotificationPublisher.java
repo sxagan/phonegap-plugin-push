@@ -7,6 +7,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.content.SharedPreferences;
+import java.util.Map;
 
 public class MyNotificationPublisher extends BroadcastReceiver {
 
@@ -29,5 +31,29 @@ public class MyNotificationPublisher extends BroadcastReceiver {
 
         Log.d(LOG_TAG, "Notification ID: "  + String.valueOf(notificationId));
         notificationManager.notify(appName, notificationId, notification);
+
+        SharedPreferences prefs = context.getSharedPreferences(PushPlugin.REMINDERS_LIST, Context.MODE_PRIVATE);
+
+        if(prefs != null) {
+
+            String keyToRemove = "";
+        
+            Map<String, ?> allEntries = prefs.getAll();
+            for (Map.Entry<String, ?> entry : allEntries.entrySet()) {
+                Log.d("map values", entry.getKey() + ": " + entry.getValue().toString());
+                if(entry.getValue().toString().equals(String.valueOf(notificationId))) {
+                    keyToRemove = entry.getKey().toString();
+                }
+            }
+
+            Log.d("REMOVING", keyToRemove);
+
+            if(!keyToRemove.equals("")) {
+                SharedPreferences.Editor editor = prefs.edit();
+                editor.remove(keyToRemove);
+                editor.commit();
+            }
+
+        }
     }
 }
