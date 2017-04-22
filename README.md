@@ -24,3 +24,42 @@ Starting with version `1.9.0`, this plugin will support `CocoaPods` installation
 
  - [PhoneGap Day US Push Workshop 2016 (using node-gcm)](http://macdonst.github.io/push-workshop/)
  - [PhoneGap Day EU Push Workshop 2016 (using PhoneGap Push)](http://macdonst.github.io/push-workshop-eu/)
+
+ # New Endpoints
+```
+PushNotification.scheduleReminder(function(res) {
+    console.warn('res', res);
+    // res = ok
+}, function(err) {
+    console.warn('err', err);
+}, {
+    itemId: itemId, // post UUID
+    msg: msg, // msg to display in notification
+    timestamp: timestamp // new Date().toJSON()
+})
+
+PushNotification.deleteReminder(function(res) {
+    console.warn('res', res);
+    // res = ok
+}, function(err) {
+    console.warn('err', err);
+}, {
+    itemId: itemId // post UUID
+})
+
+PushNotification.viewReminders(function(res) {
+    console.warn('res', res);
+    // res will be an object with UUID of post as key and the time of reminder set in milliseconds
+    // e.g.
+    // { uuid: 12321312321 }
+}, function(err) {
+    console.warn('err', err);
+})
+
+PushNotification.clearReminders(function(res) {
+    console.warn('res', res);
+    // OK
+}, function(err) {
+    console.warn('err', err);
+})
+```
