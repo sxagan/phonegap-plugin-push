@@ -1,6 +1,7 @@
 package com.adobe.phonegap.push;
 
 import android.app.NotificationManager;
+import android.app.Notification;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -28,6 +29,11 @@ import java.util.Map;
 import android.app.AlarmManager;
 import android.content.Intent;
 import android.app.PendingIntent;
+import java.text.SimpleDateFormat;
+import java.util.TimeZone;
+import java.util.Date;
+
+import android.support.v4.app.NotificationCompat;
 
 import me.leolin.shortcutbadger.ShortcutBadger;
 
@@ -282,7 +288,6 @@ public class PushPlugin extends CordovaPlugin implements PushConstants {
                                 }
                             }
 
-
                             // Added the cancel of intent here
                             int reminder_id = Integer.parseInt(appNotificationId);
 
@@ -314,24 +319,74 @@ public class PushPlugin extends CordovaPlugin implements PushConstants {
                     Log.v(LOG_TAG, "scheduleReminder: data=" + data.toString());
                     try {
                         String msg = data.getJSONObject(0).getString("msg");
-                        Long timestamp = Long.valueOf(data.getJSONObject(0).getInt("timestamp"));
+                        String timestamp = data.getJSONObject(0).getString("timestamp");
                         String itemId = data.getJSONObject(0).getString("itemId");
 
                         SharedPreferences prefs = getApplicationContext().getSharedPreferences(REMINDERS_LIST, Context.MODE_PRIVATE);
+
+                        int notID = 0;
 
                         if(prefs != null) {
                             Map<String, ?> allEntries = prefs.getAll();
                             for (Map.Entry<String, ?> entry : allEntries.entrySet()) {
                                 Log.d("map values", entry.getKey() + ": " + entry.getValue().toString());
+                                if(itemId.equals(entry.getKey())) {
+                                    notID = Integer.parseInt(entry.getValue().toString());
+                                }
+                            }
+
+                            if(notID == 0) {
+                                notID = GCMIntentService.generateRandomId(getApplicationContext());
+                            }
+
+                            NotificationCompat.Builder mBuilder =
+                            new NotificationCompat.Builder(getApplicationContext())
+                                    .setWhen(System.currentTimeMillis())
+                                    .setContentTitle(msg)
+                                    .setTicker(msg)
+                                    .setSmallIcon(getApplicationContext().getApplicationInfo().icon)
+                                    .setDefaults(Notification.DEFAULT_VIBRATE)
+                                    .setAutoCancel(true);
+                            
+                            Notification notification = mBuilder.build();
+
+                            Log.d(LOG_TAG, "Re-setting reminder" + timestamp);
+                            try {
+                                String iso8601Date = timestamp;
+                                SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
+                                formatter.setTimeZone(TimeZone.getTimeZone("UTC"));
+                                Date parsedDate = formatter.parse(iso8601Date);
+                                Long scheduleTime = parsedDate.getTime();
+                                Log.d(LOG_TAG, "NEW TIME HAS BEEN SET");
+
+                                Intent notificationIntent2 = new Intent(getApplicationContext(), MyNotificationPublisher.class);
+                                notificationIntent2.putExtra("notification_id", notID);
+                                notificationIntent2.putExtra("notification", notification);
+
+                                PendingIntent pendingIntent2 = PendingIntent.getBroadcast(getApplicationContext(), notID, notificationIntent2, PendingIntent.FLAG_CANCEL_CURRENT);
+
+                                Log.d(LOG_TAG, "TIME TO TRIGGER: " + String.valueOf(scheduleTime));
+                                AlarmManager alarmManager = (AlarmManager) getApplicationContext().getSystemService(Context.ALARM_SERVICE);
+                                alarmManager.set(AlarmManager.RTC_WAKEUP, scheduleTime, pendingIntent2);
+                                Log.d(LOG_TAG, "alarmManager has set");
+
+                                SharedPreferences.Editor editor = prefs.edit();
+                                
+                                editor.putInt(itemId, notID);
+                                editor.commit();
+
+                            } catch (Exception e) {
+                                // do nothing
+                                Log.d(LOG_TAG, "ERROR hit parsing date: " + e.toString());
                             }
                         }
 
                     } catch (JSONException e) {
                         callbackContext.error(e.getMessage());
                     }
-                }
 
-                callbackContext.success();
+                    callbackContext.success();
+                }
             });
         }
 
