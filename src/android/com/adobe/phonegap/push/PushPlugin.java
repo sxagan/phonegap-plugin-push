@@ -1,6 +1,7 @@
 package com.adobe.phonegap.push;
 
 import android.app.NotificationManager;
+import android.app.Notification;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -24,6 +25,15 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import android.app.AlarmManager;
+import android.content.Intent;
+import android.app.PendingIntent;
+import java.text.SimpleDateFormat;
+import java.util.TimeZone;
+import java.util.Date;
+
+import android.support.v4.app.NotificationCompat;
 
 import me.leolin.shortcutbadger.ShortcutBadger;
 
@@ -233,9 +243,7 @@ public class PushPlugin extends CordovaPlugin implements PushConstants {
                     }
                 }
             });
-        } 
-        //execute registerpushecho
-        else if (REGISTERPUSHECHO.equals(action)) {
+        } else if (REGISTERPUSHECHO.equals(action)) {
             cordova.getThreadPool().execute(new Runnable() {
                 public void run() {
                     try {
@@ -253,9 +261,233 @@ public class PushPlugin extends CordovaPlugin implements PushConstants {
                 }
             });
 
-        } 
-        //ENDS execute registerpushecho
+        } else if(DELETEREMINDER.equals(action)) {
+            cordova.getThreadPool().execute(new Runnable() {
+                public void run() {
+                    Log.v(LOG_TAG, "deleteReminder: data=" + data.toString());
 
+                    try {
+                        String itemId = data.getJSONObject(0).getString("itemId");
+
+                        SharedPreferences prefs = getApplicationContext().getSharedPreferences(REMINDERS_LIST, Context.MODE_PRIVATE);
+
+                        String keyToRemove = "";
+
+                        if(prefs != null) {
+
+                            String appNotificationId = "";
+                        
+                            Map<String, ?> allEntries = prefs.getAll();
+                            for (Map.Entry<String, ?> entry : allEntries.entrySet()) {
+                                Log.d("map values", entry.getKey() + ": " + entry.getValue().toString());
+                                if(entry.getKey().toString().equals(itemId)) {
+                                    appNotificationId = entry.getValue().toString();
+                                    keyToRemove = entry.getKey().toString();
+                                }
+                            }
+
+                            Log.d("REMOVING from reminder_list", keyToRemove);
+
+                            if(!keyToRemove.equals("")) {
+                                SharedPreferences.Editor editor = prefs.edit();
+                                editor.remove(keyToRemove);
+                                editor.commit();
+                            }
+
+                            // Added the cancel of intent here
+                            int reminder_id = Integer.parseInt(appNotificationId);
+
+                            Intent notificationIntent2 = new Intent(getApplicationContext(), MyNotificationPublisher.class);
+                            notificationIntent2.putExtra("notification_id", reminder_id);
+
+                            PendingIntent pendingIntent2 = PendingIntent.getBroadcast(getApplicationContext(), reminder_id, notificationIntent2, 0);
+
+                            pendingIntent2.cancel();
+
+                            AlarmManager alarmManager = (AlarmManager) getApplicationContext().getSystemService(Context.ALARM_SERVICE);
+                            alarmManager.cancel(pendingIntent2);
+
+                        }
+
+                        SharedPreferences timePrefs = getApplicationContext().getSharedPreferences(PushPlugin.REMINDERS_TIMES, Context.MODE_PRIVATE);
+                        if(timePrefs != null) {
+                            if(!keyToRemove.equals("")) {
+                                SharedPreferences.Editor editor = timePrefs.edit();
+                                editor.remove(keyToRemove);
+                                editor.commit();
+                            }
+                        }
+                        
+                    } catch (JSONException e) {
+                        callbackContext.error(e.getMessage());
+                    }
+
+                    callbackContext.success();
+
+                }
+            });
+        } else if(SCHEDULEREMINDER.equals(action)) {
+            cordova.getThreadPool().execute(new Runnable() {
+                public void run() {
+                    Log.v(LOG_TAG, "scheduleReminder: data=" + data.toString());
+                    try {
+                        String msg = data.getJSONObject(0).getString("msg");
+                        String timestamp = data.getJSONObject(0).getString("timestamp");
+                        String itemId = data.getJSONObject(0).getString("itemId");
+
+                        SharedPreferences prefs = getApplicationContext().getSharedPreferences(REMINDERS_LIST, Context.MODE_PRIVATE);
+
+                        int notID = 0;
+
+                        if(prefs != null) {
+                            Map<String, ?> allEntries = prefs.getAll();
+                            for (Map.Entry<String, ?> entry : allEntries.entrySet()) {
+                                Log.d("map values", entry.getKey() + ": " + entry.getValue().toString());
+                                if(itemId.equals(entry.getKey())) {
+                                    notID = Integer.parseInt(entry.getValue().toString());
+                                }
+                            }
+
+                            if(notID == 0) {
+                                notID = GCMIntentService.generateRandomId(getApplicationContext());
+                            }
+
+                            NotificationCompat.Builder mBuilder =
+                            new NotificationCompat.Builder(getApplicationContext())
+                                    .setWhen(System.currentTimeMillis())
+                                    .setContentTitle(msg)
+                                    .setTicker(msg)
+                                    .setSmallIcon(getApplicationContext().getApplicationInfo().icon)
+                                    .setDefaults(Notification.DEFAULT_VIBRATE)
+                                    .setAutoCancel(true);
+                            
+                            Notification notification = mBuilder.build();
+
+                            Log.d(LOG_TAG, "Re-setting reminder" + timestamp);
+                            try {
+                                String iso8601Date = timestamp;
+                                SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
+                                formatter.setTimeZone(TimeZone.getTimeZone("UTC"));
+                                Date parsedDate = formatter.parse(iso8601Date);
+                                Long scheduleTime = parsedDate.getTime();
+                                Log.d(LOG_TAG, "NEW TIME HAS BEEN SET");
+
+                                Intent notificationIntent2 = new Intent(getApplicationContext(), MyNotificationPublisher.class);
+                                notificationIntent2.putExtra("notification_id", notID);
+                                notificationIntent2.putExtra("notification", notification);
+
+                                PendingIntent pendingIntent2 = PendingIntent.getBroadcast(getApplicationContext(), notID, notificationIntent2, PendingIntent.FLAG_CANCEL_CURRENT);
+
+                                Log.d(LOG_TAG, "TIME TO TRIGGER: " + String.valueOf(scheduleTime));
+                                AlarmManager alarmManager = (AlarmManager) getApplicationContext().getSystemService(Context.ALARM_SERVICE);
+                                alarmManager.set(AlarmManager.RTC_WAKEUP, scheduleTime, pendingIntent2);
+                                Log.d(LOG_TAG, "alarmManager has set");
+
+                                SharedPreferences.Editor editor = prefs.edit();
+                                
+                                editor.putInt(itemId, notID);
+                                editor.commit();
+
+                                SharedPreferences timePrefs = getApplicationContext().getSharedPreferences(PushPlugin.REMINDERS_TIMES, Context.MODE_PRIVATE);
+                                SharedPreferences.Editor timeEditor = timePrefs.edit();
+                                timeEditor.putLong(itemId, scheduleTime);
+                                timeEditor.commit();
+
+                            } catch (Exception e) {
+                                // do nothing
+                                Log.d(LOG_TAG, "ERROR hit parsing date: " + e.toString());
+                            }
+                        }
+
+                    } catch (JSONException e) {
+                        callbackContext.error(e.getMessage());
+                    }
+
+                    callbackContext.success();
+                }
+            });
+        } else if(VIEWREMINDERS.equals(action)) {
+            cordova.getThreadPool().execute(new Runnable() {
+                public void run() {
+                    Log.v(LOG_TAG, "viewReminders called");
+
+                    SharedPreferences prefsList = getApplicationContext().getSharedPreferences(REMINDERS_LIST, Context.MODE_PRIVATE);
+                    if(prefsList != null) {
+                        Map<String, ?> allEntries = prefsList.getAll();
+                        for (Map.Entry<String, ?> entry : allEntries.entrySet()) {
+                            Log.d("REMINDERS_LIST map values", entry.getKey() + ": " + entry.getValue().toString());
+                            // jo.put(entry.getKey(), entry.getValue().toString());
+                        }
+                    }
+
+
+                    SharedPreferences prefs = getApplicationContext().getSharedPreferences(REMINDERS_TIMES, Context.MODE_PRIVATE);
+                    JSONObject jo = new JSONObject();
+                    try {
+                        if(prefs != null) {
+                            Map<String, ?> allEntries = prefs.getAll();
+                            for (Map.Entry<String, ?> entry : allEntries.entrySet()) {
+                                Log.d("REMINDERS_TIMES map values", entry.getKey() + ": " + entry.getValue().toString());
+                                jo.put(entry.getKey(), entry.getValue().toString());
+                            }
+                        }
+
+                        PluginResult pluginResult = new PluginResult(PluginResult.Status.OK, jo);
+                        pluginResult.setKeepCallback(true);
+                        callbackContext.sendPluginResult(pluginResult);
+                    } catch (UnknownError e) {
+                        callbackContext.error(e.getMessage());
+                    } catch (JSONException e) {
+                        callbackContext.error(e.getMessage());
+                    }
+                }
+            });
+        } else if(CLEARREMINDERS.equals(action)) {
+            cordova.getThreadPool().execute(new Runnable() {
+                public void run() {
+                    Log.v(LOG_TAG, "clearReminders: data=" + data.toString());
+
+                    SharedPreferences prefs = getApplicationContext().getSharedPreferences(REMINDERS_LIST, Context.MODE_PRIVATE);
+
+                    if(prefs != null) {
+                    
+                        Map<String, ?> allEntries = prefs.getAll();
+                        for (Map.Entry<String, ?> entry : allEntries.entrySet()) {
+
+                            Log.d("REMINDERS_LIST map values", entry.getKey() + ": " + entry.getValue().toString());
+
+                            // Added the cancel of intent here
+                            int reminder_id = Integer.parseInt(entry.getValue().toString());
+
+                            Intent notificationIntent2 = new Intent(getApplicationContext(), MyNotificationPublisher.class);
+                            notificationIntent2.putExtra("notification_id", reminder_id);
+
+                            PendingIntent pendingIntent2 = PendingIntent.getBroadcast(getApplicationContext(), reminder_id, notificationIntent2, 0);
+
+                            pendingIntent2.cancel();
+
+                            AlarmManager alarmManager = (AlarmManager) getApplicationContext().getSystemService(Context.ALARM_SERVICE);
+                            alarmManager.cancel(pendingIntent2);
+                        }
+
+                        SharedPreferences.Editor editor = prefs.edit();
+                        editor.clear();
+                        editor.commit();
+
+                    }
+
+                    SharedPreferences timePrefs = getApplicationContext().getSharedPreferences(PushPlugin.REMINDERS_TIMES, Context.MODE_PRIVATE);
+                    if(timePrefs != null) {
+                        SharedPreferences.Editor timeEditor = timePrefs.edit();
+                        timeEditor.clear();
+                        timeEditor.commit();
+                    }
+
+                    callbackContext.success();
+
+                }
+            });
+        }
         else {
             Log.e(LOG_TAG, "Invalid action : " + action);
             callbackContext.sendPluginResult(new PluginResult(PluginResult.Status.INVALID_ACTION));
